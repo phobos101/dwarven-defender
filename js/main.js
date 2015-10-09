@@ -38,6 +38,7 @@ Game.prototype.spawnEnemy = function() {
 function Enemy() {
   this.name        = this.getName()
   this.hp          = 100
+  this.deaths      = 0
   this.pos         = 50
   this.$avatar     = $('#enemy')
   this.$healthBar  = $('#enemy-health-bar')
@@ -51,8 +52,19 @@ function Enemy() {
 }
 
 Enemy.prototype.recreate = function() {
-  console.log("New Mob")
+  // Recyles the enemy instance to be a new enemy
+  console.log("New Mob #" + deaths)
   this.$healthBar.css('width', '100%')
+  this.name = this.getName()
+  this.hp = 100
+  this.pos = 50
+  console.log(this)
+
+  this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
+  this.$avatar.fadeIn(200)
+
+  // this.$avatar.on("click", this.click.bind(this))
+  this.moveTimer = setInterval(this.move.bind(this), 100)
 }
 
 Enemy.prototype.move = function() {
@@ -81,6 +93,7 @@ Enemy.prototype.click = function() {
   }
   else if (this.hp == 0) {
     console.log("Death!")
+    this.deaths++
     this.$avatar.fadeOut(1000)
     setTimeout(this.recreate.bind(this), 1100)
     clearInterval(this.moveTimer)
