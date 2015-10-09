@@ -23,6 +23,40 @@ body {
 	height: 500px;
 }
 
+#health-bar {
+	border-left: 1px solid white;
+	border-right: 1px solid white;
+	margin: 0 auto;
+	max-width: 960px;
+	height: 10px;
+}
+
+#player-health {
+	border: 1px solid white;
+	width: 33.33%;
+	height: 10px;
+	float: left;
+}
+
+#player-health-bar {
+	background-color: red;
+	height: 100%;
+	width: 100%;
+}
+
+#enemy-health {
+	border: 1px solid white;
+	width: 33.33%;
+	height: 10px;
+	float: right;
+}
+
+#enemy-health-bar {
+	background-color: orange;
+	height: 100%;
+	width: 100%;
+}
+
 #top-bar ul {
 	padding: 10px;
 	padding-top: 0;
