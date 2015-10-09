@@ -5,10 +5,8 @@ $(start)
 
 function start() {
   var curNum              = 0
-  var playerCurrentHp     = 70;
+  var playerCurrentHp     = 100;
   var playerMaxHp         = 100;
-  var playerCurrentEnergy = 10;
-  var playerMaxEnergy     = 10;
   var playerXp            = 0;
   var playerLevel         = 1;
   var difficulty          = 1;
@@ -30,10 +28,10 @@ function start() {
 
   function updateStats() {
     $('#player-health-bar').css('width', playerCurrentHp + '%')
-    $('#player_hp').html('HP: ' + playerCurrentHp + ' / ' + playerMaxHp)
-    $('#player_energy').html('Energy: ' + playerCurrentEnergy + ' / ' + playerMaxEnergy)
+    $('#player-hp').html('HP: ' + playerCurrentHp + ' / ' + playerMaxHp)
+    $('#enemy-hp').html('Enemy: ' + 100 + ' / ' + 100)
     $('#level').html('Level: ' + playerLevel)
-    $('#xp_bar').html(playerXp + ' / ' + (1000 * (playerLevel * 2)))
+    $('#xp-bar').html(playerXp + ' / ' + (1000 * (playerLevel * 2)))
   }
 
 }
