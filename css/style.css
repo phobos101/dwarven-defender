@@ -57,6 +57,7 @@ body {
 	margin: 5px;
 	padding: 5px;
 	bottom:0;
+	left: 50px;
 }
 
 #enemy {
@@ -64,7 +65,7 @@ body {
 	margin: 5px;
 	padding: 5px;
 	bottom: 0;
-	right: 0;
+	right: 50px;
 }
 
 #xp_bar {
