@@ -9,7 +9,7 @@ body {
 	font-family: diablo;
 }
 
-#health-bar {
+#top-bar {
 	margin: 0 auto;
 	max-width: 1024px;
 	height: 10px;

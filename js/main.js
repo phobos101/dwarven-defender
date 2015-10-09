@@ -1,57 +1,56 @@
 //--------------------------------------
 //                START
 //--------------------------------------
-$(start)
+$(function() {
+  var game = new Game();
+});
 
-function start() {
-  var curNum              = 0
-  var playerCurrentHp     = 100;
-  var playerMaxHp         = 100;
-  var enemyCurrentHp      = 100;
-  var enemyMaxHp          = 100;
-  var playerXp            = 0;
-  var playerLevel         = 1;
-  var difficulty          = 1;
-  var playerGold          = 0;
+function Game() {
+  this.playerCurrentHp = 100;
+  this.playerMaxHp     = 100;
+  this.enemyCurrentHp  = 100;
+  this.enemyMaxHp      = 100;
+  this.playerXp        = 0;
+  this.playerLevel     = 1;
+  this.playerGold      = 0;
+  this.xpToLevel       = 1000 * (this.playerLevel * 2);
 
-  updateStats();
+  this.updateStats();
+  this.spawnEnemy();
+}
+
+Game.prototype.updateStats = function () {
+  console.log(this.playerCurrentHp)
+  console.log(this)
+  $('#player-health-bar').css('width', this.playerCurrentHp + '%')
+  $('#player-hp').html('HP: ' + this.playerCurrentHp + ' / ' + this.playerMaxHp)
+  $('#enemy-health-bar').css('width', this.enemyCurrentHp + '%')
+  $('#enemy-hp').html('Enemy: ' + this.enemyCurrentHp + ' / ' + this.enemyMaxHp)
+  $('#level').html('Level: ' + this.playerLevel)
+}
+
+Game.prototype.spawnEnemy = function() {
   var newEnemy = new Enemy;
+  console.log(newEnemy)
+}
 
-  function updateStats() {
-    $('#player-health-bar').css('width', playerCurrentHp + '%')
-    $('#player-hp').html('HP: ' + playerCurrentHp + ' / ' + playerMaxHp)
-    $('#enemy-health-bar').css('width', enemyCurrentHp + '%')
-    $('#enemy-hp').html('Enemy: ' + enemyCurrentHp + ' / ' + enemyMaxHp)
-    $('#level').html('Level: ' + playerLevel)
-    $('#xp-bar').html(playerXp + ' / ' + (1000 * (playerLevel * 2)))
-  }
+function Enemy() {
+  this.name    = this.getName()
+  this.hp      = 100; // 100 * playerLevel
+  this.$avatar = $('#enemy')
 
-  function Enemy() {
-    // this.name = Enemy.getName()
-    this.hp   = 100;
+  this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
+}
 
-    $('#enemy').on("click", Enemy.hitEnemy) 
-  }
-
-  Enemy.getName = function() {
-    var enemyNames = [
-                      "Xarg",
-                      "Jerxag",
-                      "Slath",
-                      "Laoth",
-                      "glatt"
-                     ]
-    return enemyNames[Math.floor(Math.random()*5)]
-  }
-
-  Enemy.hitEnemy = function() {
-    console.log("enemy hit!")
-    this.hp -= 10
-
-    // updateStats()
-    // if (enemyCurrentHp == 0) {
-    //   // Kill enemy
-    // }
-  }
-
+Enemy.prototype.getName = function() {
+  var enemyNames = [
+                    "Xarg",
+                    "Jerxag",
+                    "Slath",
+                    "Laoth",
+                    "glatt",
+                    "Jahtg",
+                    "Yuarn"
+                   ]
+  return enemyNames[Math.floor(Math.random()*7)]
 }
