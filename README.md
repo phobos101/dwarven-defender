@@ -12,4 +12,4 @@ A new enemy is then spawned and this repeats in this fasion.
 
 Gold is used to purchase upgrades and abilities.
 
-When the player dies the game is over.
+When the player dies the game is over..
