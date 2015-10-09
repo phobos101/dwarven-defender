@@ -16,9 +16,14 @@ function Game() {
   this.playerLevel     = 1;
   this.playerGold      = 0;
   this.xpToLevel       = 1000 * (this.playerLevel * 2);
+  this.$statButton     = $('#stats-btn')
+  this.$invButton      = $('#inv-btn')
 
   this.updateStats();
-  this.spawnEnemy(); 
+  this.spawnEnemy();
+
+  this.$statButton.on("click", this.showStats.bind(this))
+  this.$invButton.on("click", this.showInv.bind(this))
 }
 
 Game.prototype.updateStats = function () {
@@ -30,6 +35,15 @@ Game.prototype.spawnEnemy = function() {
   var newEnemy = new Enemy();
 }
 
+Game.prototype.showStats = function() {
+  // Stats Button clicked
+  console.log("Stats button clicked!")
+}
+
+Game.prototype.showInv = function() { 
+  // Inventory button clicked
+  console.log("Inventory button clicked!")
+}
 
 //-------------------------------------------
 //              ENEMY OBJECT
@@ -45,9 +59,7 @@ function Enemy() {
   console.log(this)
 
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
-
   this.$avatar.on("click", this.click.bind(this))
-
   this.moveTimer = setInterval(this.move.bind(this), 100)
 }
 
@@ -56,8 +68,8 @@ Enemy.prototype.recreate = function() {
   console.log("New Mob #" + deaths)
   this.$healthBar.css('width', '100%')
   this.name = this.getName()
-  this.hp = 100
-  this.pos = 50
+  this.hp   = 100
+  this.pos  = 50
   console.log(this)
 
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
