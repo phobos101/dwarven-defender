@@ -20,11 +20,14 @@ body {
 .game-container {
 	display: block;
 	margin: 0 auto;
-	height: 560px;
+	height: 500px;
 }
 
 #top-bar ul {
 	padding: 10px;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin: 0 auto;
 	text-align: center;
 }
 
@@ -42,8 +45,10 @@ body {
 #content {
 	background-image: url(../assets/background2.png);
 	background-size: cover;
-	height: 560px;
+	height: 500px;
+	max-width: 960px;
 	position: relative;
+	margin: 0 auto;
 }
 
 #player {
@@ -67,10 +72,17 @@ body {
 	font-weight: bold;
 	text-transform: uppercase;
 	border: 1px solid white;
-	margin-bottom: 20px;
+	width: 960px;
+	margin: 0 auto;
 }
 
 #buttons {
-	display: block;
+	max-width: 960px;
 	margin: 0 auto;
+}
+
+.button {
+  min-width: 320px;
+  width: 33.33%;
+  float: left;
 }
