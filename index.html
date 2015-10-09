@@ -1,51 +1,34 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<title>Diablo</title>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="css/normalize.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
-	</head>
+<head>
+	<title>Diablo</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</head>
 
-	<body>
-		<header>
-			<h1>Dwarven Defender</h1>
-		</header>
-
-		<div class="game-container">
-
-			<div id="top-bar">
-				<ul>
-					<li><p id="player-hp">Your HP:</p></li>
-					<li><p id="level">Level:</p></li>
-					<li><p id="enemy-hp">Enemy HP:</p></li>
-				</ul>
-			</div>
+<body>
+	<div class="game-container">
+		<div id="content">
 
 			<div id="health-bar"> 
 				<div id="player-health"><div id="player-health-bar"></div></div>
 				<div id="enemy-health"><div id="enemy-health-bar"></div></div>
 			</div>
 
-			<div id="content">
-				<img src="assets/player_side_transparent.gif" id="player">
-				<img src="assets/enemy_side_transparent.gif" id="enemy">
-			</div>
-
-			<div id="xp-bar">
-				0
-			</div>
+			<img src="assets/player_side_transparent.gif" id="player">
+			<img src="assets/enemy_side_transparent.gif" id="enemy">
 
 			<div id="buttons">
-				<button class="button">Inventory</button>
-				<button class="button">Skills</button>
-				<button class="button">Stats</button>
+				<button class="button" id="inv-btn">Inventory</button>
+				<button class="button" id="stats-btn">Stats</button>
 			</div>
-
 		</div>
-	</body>
+
+	</div>
+</body>
 
 </html>

@@ -9,52 +9,13 @@ body {
 	font-family: diablo;
 }
 
-header {
-	-webkit-box-shadow: 0px 1px 5px 0px rgba(255,255,255,1);
-	-moz-box-shadow: 0px 1px 5px 0px rgba(255,255,255,1);
-	box-shadow: 0px 1px 5px 0px rgba(255,255,255,1);
-	height: 50px;
-	text-align: center;
-}
-
-header h1 {
-	margin: 0;
-	font-family: diablo;
-	color: white;
-	font-size: 32px;
-	line-height: 50px;
-}
-
-#top-bar ul {
-	max-width: 960px;
-	height: 20px;
-	margin:0 auto;
-	text-align: center;
-}
-
-#top-bar li {
-	width: 33.33%;
-	float: left;
-	display: inline-block;
-}
-
-#top-bar p {
-	margin: 0;
-	font-size: 18px;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
 #health-bar {
-	border-left: 1px solid white;
-	border-right: 1px solid white;
 	margin: 0 auto;
-	max-width: 960px;
+	max-width: 1024px;
 	height: 10px;
 }
 
 #player-health {
-	border: 1px solid white;
 	width: 33.33%;
 	height: 10px;
 	float: left;
@@ -67,7 +28,6 @@ header h1 {
 }
 
 #enemy-health {
-	border: 1px solid white;
 	width: 33.33%;
 	height: 10px;
 	float: right;
@@ -82,16 +42,16 @@ header h1 {
 .game-container {
 	display: block;
 	margin: 0 auto;
-	height: 500px;
+	max-height: 580px;
 	margin-top: 30px;
 }
 
 #content {
 	border: 1px solid white;
-	background-image: url(../assets/background2.png);
+	background-image: url(../assets/background-outside-1.png);
 	background-size: cover;
-	height: 500px;
-	max-width: 960px;
+	height: 580px;
+	max-width: 1024px;
 	position: relative;
 	margin: 0 auto;
 }
@@ -112,25 +72,21 @@ header h1 {
 	right: 50px;
 }
 
-#xp-bar {
-	text-align: center;
-	font-size: 16px;
-	font-weight: bold;
-	text-transform: uppercase;
-	border: 1px solid white;
-	width: 960px;
-	margin: 0 auto;
-}
-
 #buttons {
-	border: 1px solid white;
-	max-width: 960px;
+	max-width: 1024px;
 	margin: 0 auto;
 }
 
-.button {
-  min-width: 320px;
+#stats-btn {
+  min-width: 32px;
   width: 33.33%;
-  float: left;
+  float: right;
   color: black;
+}
+
+#inv-btn {
+	min-width: 32px;
+	width: 33.33%;
+	float: left;
+	color: black;
 }
