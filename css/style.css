@@ -1,0 +1,22 @@
+@font-face {
+	font-family: diablo;
+	src: url(../assets/diablo.woff);
+}
+
+body {
+	background-color: black;
+}
+
+#title_area h1 {
+	font-family: diablo;
+	color: white;
+	font-size: 32px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+div.center iframe {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
