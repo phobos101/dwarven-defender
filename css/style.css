@@ -15,8 +15,7 @@ body {
 	margin-bottom: 30px;
 }
 
-div.center iframe {
+.center iframe {
 	display: block;
-    margin-left: auto;
-    margin-right: auto;
+	margin: 0 auto;
 }
