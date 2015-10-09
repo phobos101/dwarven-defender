@@ -16,6 +16,7 @@ body {
 }
 
 #player-health {
+	background-color: black;
 	width: 33.33%;
 	height: 10px;
 	float: left;
@@ -28,6 +29,7 @@ body {
 }
 
 #enemy-health {
+	background-color: black;
 	width: 33.33%;
 	height: 10px;
 	float: right;

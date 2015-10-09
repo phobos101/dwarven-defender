@@ -1,9 +1,13 @@
-//--------------------------------------
-//                START
-//--------------------------------------
+//-------------------------------------------
+//                    START
+//-------------------------------------------
 $(function() {
   var game = new Game();
 });
+
+//-------------------------------------------
+//                 GAME OBJECT
+//-------------------------------------------
 
 function Game() {
   this.playerCurrentHp = 100;
@@ -20,12 +24,7 @@ function Game() {
 }
 
 Game.prototype.updateStats = function () {
-  console.log(this.playerCurrentHp)
-  console.log(this)
   $('#player-health-bar').css('width', this.playerCurrentHp + '%')
-  $('#player-hp').html('HP: ' + this.playerCurrentHp + ' / ' + this.playerMaxHp)
-  $('#enemy-health-bar').css('width', this.enemyCurrentHp + '%')
-  $('#enemy-hp').html('Enemy: ' + this.enemyCurrentHp + ' / ' + this.enemyMaxHp)
   $('#level').html('Level: ' + this.playerLevel)
 }
 
@@ -35,12 +34,18 @@ Game.prototype.spawnEnemy = function() {
 }
 
 function Enemy() {
-  this.name    = this.getName()
-  this.hp      = 100; // 100 * playerLevel
-  this.$avatar = $('#enemy')
+  this.name       = this.getName()
+  this.hp         = 100; // 100 * playerLevel
+  this.$avatar    = $('#enemy')
+  this.$healthBar = $('#enemy-health-bar')
 
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
+  this.$avatar.on("click", this.click.bind(this)) // Must bind to pass enemy and not the picture!
 }
+
+//-------------------------------------------
+//              ENEMY OBJECT
+//-------------------------------------------
 
 Enemy.prototype.getName = function() {
   var enemyNames = [
@@ -53,4 +58,9 @@ Enemy.prototype.getName = function() {
                     "Yuarn"
                    ]
   return enemyNames[Math.floor(Math.random()*7)]
+}
+
+Enemy.prototype.click = function() {
+  this.hp -= 10
+  this.$healthBar.css('width', this.hp + '%')
 }
