@@ -30,18 +30,18 @@ Game.prototype.updateStats = function () {
 
 Game.prototype.spawnEnemy = function(level) {
   var newEnemy = new Enemy(level);
-  console.log(newEnemy)
 
   Game.prototype.despawnEnemy = function() {
     if (document.getElementById('enemy-health-bar').getAttribute('style') == 'width: 0%;') {
       console.log("Kill it!")
       newEnemy.cleanUp();
       newEnemy = undefined;
-      delete newEnemy;
-      console.log(newEnemy)
       $('#enemy-health-bar').css('width', '100%')
-    }
-  }
+      setTimeout(function() {
+        Game.prototype.spawnEnemy(level)
+      }, 1000) // Spawn new enemy after 1s
+    } // End of IF
+  } // End of despawn
 }
 
 
@@ -56,9 +56,12 @@ function Enemy(level) {
   this.pos         = 50;
   this.$avatar     = $('#enemy');
   this.$healthBar  = $('#enemy-health-bar');
+  console.log(this)
 
+  this.$avatar.css('right', '50px');
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif');
-  this.$avatar.on("click", this.click.bind(this)); // Must bind to pass enemy and not the picture!
+
+  this.$avatar.on("click", this.click.bind(this));
 
   this.moveTimer = setInterval(this.move.bind(this), 100);
 }
@@ -82,24 +85,17 @@ Enemy.prototype.getName = function() {
 }
 
 Enemy.prototype.click = function() {
+  // debugger;
+  console.log(this)
   this.hp -= 10;
   this.$healthBar.css('width', this.hp + '%');
 
   if (this.hp <= 0) {
     Game.prototype.despawnEnemy()
   }
-
-  console.log(this.hp);
 }
 
 Enemy.prototype.cleanUp = function() {
   clearInterval(this.moveTimer);
-  this.name = undefined;
-  this.playerLevel = null;
-  this.hp = null;
-  this.pos = null;
-  this.$avatar.attr('src', '');
-  this.$avatar.off;
-  this.$avatar = undefined;
-  this.$healthBar = undefined;
+  this.$avatar.attr('src', 'assets/dead.png');
 }
