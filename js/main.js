@@ -24,6 +24,8 @@ function Game() {
 
   this.$statButton.on("click", this.showStats.bind(this))
   this.$invButton.on("click", this.showInv.bind(this))
+
+  setInterval(this.takeDmg.bind(this), 500)
 }
 
 Game.prototype.updateStats = function () {
@@ -45,6 +47,14 @@ Game.prototype.showInv = function() {
   console.log("Inventory button clicked!")
 }
 
+Game.prototype.takeDmg = function() {
+  if (document.getElementById('enemy').hasAttribute('damage')) {
+    console.log('Takeing Damage!')
+    this.playerCurrentHp -= 1
+    this.updateStats()
+  }
+}
+
 //-------------------------------------------
 //              ENEMY OBJECT
 //-------------------------------------------
@@ -53,7 +63,7 @@ function Enemy() {
   this.name        = this.getName()
   this.hp          = 100
   this.deaths      = 0
-  this.pos         = 50
+  this.pos         = 80.0
   this.$avatar     = $('#enemy')
   this.$healthBar  = $('#enemy-health-bar')
   console.log(this)
@@ -65,11 +75,11 @@ function Enemy() {
 
 Enemy.prototype.recreate = function() {
   // Recyles the enemy instance to be a new enemy
-  console.log("New Mob #" + deaths)
+  console.log("New Mob #" + this.deaths)
   this.$healthBar.css('width', '100%')
   this.name = this.getName()
   this.hp   = 100
-  this.pos  = 50
+  this.pos  = 80.0
   console.log(this)
 
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
@@ -80,8 +90,13 @@ Enemy.prototype.recreate = function() {
 }
 
 Enemy.prototype.move = function() {
-  this.pos += 1;
-  this.$avatar.css("right", this.pos)
+  if (this.pos > 30) {
+    this.pos -= 0.2;
+    this.$avatar.css("left", this.pos + '%')
+  }
+  else {
+    this.$avatar.attr('damage', 'on')
+  }
 }
 
 Enemy.prototype.getName = function() {
@@ -105,6 +120,7 @@ Enemy.prototype.click = function() {
   }
   else if (this.hp == 0) {
     console.log("Death!")
+    document.getElementById('enemy').removeAttribute('damage')
     this.deaths++
     this.$avatar.fadeOut(1000)
     setTimeout(this.recreate.bind(this), 1100)
