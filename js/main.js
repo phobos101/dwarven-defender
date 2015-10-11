@@ -19,7 +19,7 @@ function Game() {
   this.playerMaxHp     = 100
   this.playerXp        = 0
   this.level           = 1
-  this.playerGold      = 1000000
+  this.playerGold      = 0
   this.upgradePoints   = 0
   this.kills           = 0
 
@@ -69,7 +69,7 @@ Game.prototype.takeDmg = function() {
       var randomNum = (Math.random()*100).toFixed(2)
       if (randomNum > this.playerDge) {
         console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs 
-                   + ' defence = ' + (this.level - this.playerDfs))
+                   + ' defence = ' + ((this.level+5*1.1) - this.playerDfs))
         this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
         this.updateStats()
       }
@@ -122,8 +122,8 @@ Game.prototype.showStats = function() {
     $('#points').html('Points to spend: ' + this.upgradePoints)
     $('#attack').html('Attack: ' + this.playerAtk)
     $('#defence').html('Defence: ' + this.playerDfs)
-    $('#dodge').html('Dodge: ' + this.playerDge)
-    $('#presence').html('Presence: ' + this.playerPrs)
+    $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
+    $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
   }
 }
 
@@ -177,7 +177,7 @@ Game.prototype.upgradeDodge = function() {
     this.upgradePoints -= 1
     this.playerDge += 0.1
     $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2))
+    $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
   }
 }
 
@@ -186,7 +186,7 @@ Game.prototype.upgradePresence = function() {
     this.upgradePoints -= 1
     this.playerPrs += 0.1
     $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#presence').html('Presence: ' + this.playerPrs.toFixed(2))
+    $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
   }
 }
 
@@ -206,10 +206,10 @@ Game.prototype.buyDarius = function() {
 }
 
 Game.prototype.buyAlaris = function() {
-  if (this.playerGold >= 10000) {
+  if (this.playerGold >= 1000) {
     console.log('Alaris Hired!')
     this.alarisTimer = setInterval(this.clickEnemy.bind(this), 200)
-    this.playerGold -= 10000
+    this.playerGold -= 1000
     $('#gold').html('Gold: ' + this.playerGold)
     $('#alaris').html('Alaris Hired!')
     $('#alaris').off()
@@ -217,10 +217,10 @@ Game.prototype.buyAlaris = function() {
 }
 
 Game.prototype.buyTerna = function() {
-  if (this.playerGold >= 100000) {
+  if (this.playerGold >= 10000) {
     console.log('Terna Hired!')
     this.ternaTimer = setInterval(this.clickEnemy.bind(this), 100)
-    this.playerGold -= 100000
+    this.playerGold -= 10000
     $('#gold').html('Gold: ' + this.playerGold)
     $('#terna').html('Terna Hired!')
     $('#terna').off()
@@ -295,7 +295,6 @@ Game.prototype.clickEnemy = function() {
         clearInterval(this.moveTimer)
         this.enemyHp = -1
       }
-      console.log(this.enemyHp)
     }
     else {
       console.log('Enemy already fading')
