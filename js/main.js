@@ -7,7 +7,7 @@ $(function() {
 
 function start() {
   $('#start').css('display', 'none')
-  var game = new Game();
+  var game = new Game()
 }
 
 //-------------------------------------------
@@ -15,20 +15,25 @@ function start() {
 //-------------------------------------------
 
 function Game() {
-  this.playerCurrentHp = 100;
-  this.playerMaxHp     = 100;
-  this.playerXp        = 0;
-  this.level           = 1;
-  this.playerGold      = 0;
+  this.playerCurrentHp = 100
+  this.playerMaxHp     = 100
+  this.playerXp        = 0
+  this.level           = 1
+  this.playerGold      = 0
+  this.kills           = 0
+  this.enemyHp         = 100 * this.level
+  this.enemyPos        = 80.0
   this.$statButton     = $('#stats-btn')
   this.$invButton      = $('#inv-btn')
+
   $('#level').html('Level: ' + this.level)
 
-  this.updateStats();
-  this.spawnEnemy();
+  this.updateStats()
+  this.spawnEnemy()
 
   this.$statButton.on("click", this.showStats.bind(this))
   this.$invButton.on("click", this.showInv.bind(this))
+  $('#enemy').on("click", this.clickEnemy.bind(this))
 
   $('#dev-kill-player').on('click', this.killPlayer.bind(this))
 
@@ -43,10 +48,6 @@ Game.prototype.killPlayer = function() {
 Game.prototype.updateStats = function () {
   $('#player-health-bar').attr('max', this.playerMaxHp)
   $('#player-health-bar').attr('value', this.playerCurrentHp)
-}
-
-Game.prototype.spawnEnemy = function() {
-  var newEnemy = new Enemy();
 }
 
 Game.prototype.showStats = function() {
@@ -77,7 +78,6 @@ Game.prototype.showInv = function() {
 Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
-      this.level = document.getElementById('level').getAttribute('level')
       console.log('Taking ' + this.level + ' damage!')
       this.playerCurrentHp -= this.level
       this.updateStats()
@@ -91,110 +91,79 @@ Game.prototype.takeDmg = function() {
 
 Game.prototype.gameOver = function() {
     clearInterval(this.damageTimer)
-    this.level = document.getElementById('level').getAttribute('level')
-    var kills = document.getElementById('dev-kills').getAttribute('value')
+
     $('#enemy').attr('paused', 'on')
     $('#player-alive-div').css('display', 'none')
     $('#player-dead-div').css('display', 'block')
     $('#game-stats').html('You reached level ' + this.level + '<br />'
-                         +'You killed ' + kills + ' enemies')
+                         +'You killed ' + this.kills + ' enemies')
 }
 
-
-
 //-------------------------------------------
-//              ENEMY OBJECT
+//              ENEMY THINGS
 //-------------------------------------------
 
-function Enemy() {
-  this.name        = this.getName()
-  this.hp          = 100
-  this.deaths      = 0
-  this.pos         = 80.0
-  this.level       = 1
-  this.$avatar     = $('#enemy')
-  this.$healthBar  = $('#enemy-health-bar')
-  console.log(this)
+Game.prototype.spawnEnemy = function() {
+  console.log("New Mob #" + (this.kills + 1))
 
-  this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
-  this.$avatar.on("click", this.click.bind(this))
-  this.moveTimer = setInterval(this.move.bind(this), 100)
-}
-
-Enemy.prototype.recreate = function() {
-  // Recyles the enemy instance to be a new enemy
-  if (this.deaths % 5 == 0) {
+  if ((this.kills % 5 == 0) && this.kills != 0) {
     this.level += 1
     $('#level').html('Level: ' + this.level)
     $('#level').attr('level', this.level)
   }
 
-  // if (this.deaths % 10 == 0) {
+  // if (this.kills % 10 == 0) {
   //   // boss battle
-
   // }
 
-  console.log("New Mob #" + this.deaths)
-  this.name = this.getName()
-  this.hp   = 100 * this.level
-  this.pos  = 80.0
-  this.$healthBar.attr('max', this.hp)
-  this.$healthBar.attr('value', this.hp)
+  // Set up new enemy
+  this.enemyHp   = 100 * this.level
+  this.enemyPos  = 80.0
+  $('#enemy-health-bar').attr('max', this.enemyHp)
+  $('#enemy-health-bar').attr('value', this.enemyHp)
   console.log(this)
 
-  this.$avatar.css("left", this.pos + '%')
-  this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
-  this.$avatar.fadeIn(200)
+  // Position and show new enemy
+  $('#enemy').css("left", this.enemyPos + '%')
+  $('#enemy').attr('src', 'assets/enemy_side_transparent.gif')
+  $('#enemy').fadeIn(200)
 
-  this.moveTimer = setInterval(this.move.bind(this), 100)
+  // Start moveing enemy towards player
+  this.moveTimer = setInterval(this.moveEnemy.bind(this), 100)
 }
 
-Enemy.prototype.move = function() {
+Game.prototype.moveEnemy = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
-    if (this.pos > 30) {
-      this.pos -= 0.2;
-      this.$avatar.css("left", this.pos + '%')
+    if (this.enemyPos > 30) {
+      this.enemyPos -= 0.2;
+      $('#enemy').css("left", this.enemyPos + '%')
     }
     else {
-      this.$avatar.attr('damage', 'on')
+      $('#enemy').attr('damage', 'on')
     }
   }
 }
 
-Enemy.prototype.getName = function() {
-  var enemyNames = [
-                    "Xarg",
-                    "Jerxag",
-                    "Slath",
-                    "Laoth",
-                    "glatt",
-                    "Jahtg",
-                    "Yuarn"
-                   ]
-  return enemyNames[Math.floor(Math.random()*7)]
-}
-
-Enemy.prototype.click = function() {
-  if (this.hp > 11) {
-    this.hp -= 10;
-    this.$healthBar.attr('value', this.hp)
-    console.log(this.hp)
+Game.prototype.clickEnemy = function() {
+  if (this.enemyHp > 11) {
+    this.enemyHp -= 10;
+    $('#enemy-health-bar').attr('value', this.enemyHp)
+    console.log(this.enemyHp)
   }
-  else if (this.hp == 10) {
-    this.hp -= 10;
-    this.$healthBar.attr('value', this.hp)
-    console.log(this.hp)
+  else if (this.enemyHp == 10) {
+    this.enemyHp -= 10;
+    $('#enemy-health-bar').attr('value', this.enemyHp)
+    console.log(this.enemyHp)
     console.log("Death!")
     document.getElementById('enemy').removeAttribute('damage')
-    this.deaths++
-    $('#dev-kills').attr('value', this.deaths)
-    this.$avatar.fadeOut(1000)
-    setTimeout(this.recreate.bind(this), 1100)
+    this.kills++
+    $('#enemy').fadeOut(1000)
+    setTimeout(this.spawnEnemy.bind(this), 1100)
     clearInterval(this.moveTimer)
     var fading = true;
-    this.hp = -1 // Prevent repeat recreates
+    this.enemyHp = -1 // Prevent repeat recreates
   }
   else {
     console.log('Enemy already fading')
   }
-}
+} // End of clickEnemy function
