@@ -32,7 +32,7 @@ body {
 	left: 40%
 }
 
-#stats-window {
+.window {
 	width: 80%;
 	height: 80%;
 	margin: 0 auto;
@@ -41,12 +41,12 @@ body {
 	overflow: hidden;
 }
 
-#stats-window ul {
+.window ul {
 	float: left;
-	width: 40%;
+	width: 50%;
 }
 
-#stats-window li {
+.window li {
 	padding: 2.2%;
 	text-decoration: none;
 }
@@ -56,8 +56,9 @@ body {
 }
 
 .upgrade-button {
+	float: right;
 	margin-top: 1%;
-	width: 50%;
+	width: 40%;
 	color: black;
 }
 
@@ -71,8 +72,26 @@ body {
 	font-size: 
 }
 
+#henchmen-buttons {
+	margin-top: 1%;
+}
+
+.henchmen-button {
+	float: right;
+	margin-top: 1%;
+	width: 40%;
+	color: black;
+}
+
 #level {
 	position: absolute;
+	left: 43%;
+	font-size: 24px;
+}
+
+#gold {
+	position: absolute;
+	padding-top: 5%;
 	left: 43%;
 	font-size: 24px;
 }
@@ -125,7 +144,7 @@ progress#enemy-health-bar {
   color: black;
 }
 
-#inv-btn {
+#henchmen-btn {
 	min-width: 32px;
 	width: 33.33%;
 	float: left;
