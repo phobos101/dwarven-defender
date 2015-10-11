@@ -99,12 +99,12 @@ body {
 #top-bar {
 	margin: 0 auto;
 	max-width: 1024px;
-	height: 10px;
+	height: 20px;
 }
 
 #player-health {
 	width: 33.33%;
-	height: 10px;
+	height: 20px;
 	float: left;
 }
 
@@ -122,7 +122,7 @@ progress[value]::-webkit-progress-bar {
 
 #enemy-health {
 	width: 33.33%;
-	height: 10px;
+	height: 20px;
 	float: right;
 }
 
