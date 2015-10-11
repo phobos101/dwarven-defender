@@ -2,8 +2,13 @@
 //                    START
 //-------------------------------------------
 $(function() {
-  var game = new Game();
+  $('#start').on('click', start)
 });
+
+function start() {
+  $('#start').css('display', 'none')
+  var game = new Game();
+}
 
 //-------------------------------------------
 //                 GAME OBJECT
@@ -25,7 +30,14 @@ function Game() {
   this.$statButton.on("click", this.showStats.bind(this))
   this.$invButton.on("click", this.showInv.bind(this))
 
-  setInterval(this.takeDmg.bind(this), 500)
+  $('#dev-kill-player').on('click', this.killPlayer.bind(this))
+
+  this.damageTimer = setInterval(this.takeDmg.bind(this), 500)
+}
+
+Game.prototype.killPlayer = function() {
+  // DEV DEBUG USE ONLY!
+  this.playerCurrentHp = 0
 }
 
 Game.prototype.updateStats = function () {
@@ -48,7 +60,7 @@ Game.prototype.showStats = function() {
     document.getElementById('enemy').removeAttribute('paused')
   }
   else {
-    // Show the stats window and pause trhe game
+    // Show the stats window and pause the game
     console.log("Game paused")
     $('#stats-window').css('display', 'block')
     $('#stats-window').attr('show', 'on')
@@ -71,7 +83,24 @@ Game.prototype.takeDmg = function() {
       this.updateStats()
     }
   }
+  if (this.playerCurrentHp < 1) {
+    // Game over
+    this.gameOver()
+  }
 }
+
+Game.prototype.gameOver = function() {
+    clearInterval(this.damageTimer)
+    this.level = document.getElementById('level').getAttribute('level')
+    var kills = document.getElementById('dev-kills').getAttribute('value')
+    $('#enemy').attr('paused', 'on')
+    $('#player-alive-div').css('display', 'none')
+    $('#player-dead-div').css('display', 'block')
+    $('#game-stats').html('You reached level ' + this.level + '<br />'
+                         +'You killed ' + kills + ' enemies')
+}
+
+
 
 //-------------------------------------------
 //              ENEMY OBJECT
@@ -113,6 +142,7 @@ Enemy.prototype.recreate = function() {
   this.$healthBar.attr('value', this.hp)
   console.log(this)
 
+  this.$avatar.css("left", this.pos + '%')
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
   this.$avatar.fadeIn(200)
 
@@ -157,6 +187,7 @@ Enemy.prototype.click = function() {
     console.log("Death!")
     document.getElementById('enemy').removeAttribute('damage')
     this.deaths++
+    $('#dev-kills').attr('value', this.deaths)
     this.$avatar.fadeOut(1000)
     setTimeout(this.recreate.bind(this), 1100)
     clearInterval(this.moveTimer)

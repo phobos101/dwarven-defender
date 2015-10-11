@@ -24,6 +24,14 @@ body {
 	margin: 0 auto;
 }
 
+#start-button {
+	position: absolute;
+	color: black;
+	width: 20%;
+	top: 40%;
+	left: 40%
+}
+
 #stats-window {
 	width: 80%;
 	height: 80%;
@@ -134,4 +142,22 @@ progress#enemy-health-bar {
 	padding: 5px;
 	bottom: 0;
 	left: 80%;
+}
+
+#player-dead-div {
+	background-color: black;
+	color: #880015;
+	height: 580px;
+	max-width: 1024px;
+	position: relative;
+	margin: 0 auto;
+}
+
+#player-dead-div h1 {
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+#game-stats {
+	text-align: center;
 }
