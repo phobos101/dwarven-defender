@@ -28,8 +28,35 @@ body {
 	width: 80%;
 	height: 80%;
 	margin: 0 auto;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.7);
 	display: none;
+	overflow: hidden;
+}
+
+#stats-window ul {
+	float: left;
+	width: 40%;
+}
+
+#stats-window li {
+	padding: 2.2%;
+	text-decoration: none;
+}
+
+#upgrade-buttons {
+	margin-top: 1%;
+}
+
+.upgrade-button {
+	margin-top: 1%;
+	width: 50%;
+	color: black;
+}
+
+#stats-window p {
+	clear: both;
+	padding-left: 5%;
+	font-size: 
 }
 
 #level {

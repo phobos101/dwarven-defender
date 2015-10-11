@@ -66,7 +66,7 @@ Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
       this.level = document.getElementById('level').getAttribute('level')
-      console.log('Taking' + this.level + 'Damage!')
+      console.log('Taking ' + this.level + ' damage!')
       this.playerCurrentHp -= this.level
       this.updateStats()
     }
