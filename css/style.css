@@ -61,6 +61,10 @@ body {
 	color: black;
 }
 
+#points {
+	text-align: center;
+}
+
 #stats-window p {
 	clear: both;
 	padding-left: 5%;
