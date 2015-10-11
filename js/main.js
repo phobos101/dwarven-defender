@@ -13,11 +13,11 @@ function Game() {
   this.playerCurrentHp = 100;
   this.playerMaxHp     = 100;
   this.playerXp        = 0;
-  this.playerLevel     = 1;
+  this.level           = 1;
   this.playerGold      = 0;
   this.$statButton     = $('#stats-btn')
   this.$invButton      = $('#inv-btn')
-  $('#level').html('Level: ' + this.playerLevel)
+  $('#level').html('Level: ' + this.level)
 
   this.updateStats();
   this.spawnEnemy();
@@ -38,9 +38,9 @@ Game.prototype.spawnEnemy = function() {
 }
 
 Game.prototype.showStats = function() {
-  console.log("Stats button clicked!")
   if (document.getElementById('stats-window').hasAttribute('show')) {
     // Hide the window if open
+    console.log("Game resumed")
     $('#stats-window').css('display', 'none')
     document.getElementById('stats-window').removeAttribute('show')
     $('#enemy').css('display', 'block')
@@ -49,6 +49,7 @@ Game.prototype.showStats = function() {
   }
   else {
     // Show the stats window and pause trhe game
+    console.log("Game paused")
     $('#stats-window').css('display', 'block')
     $('#stats-window').attr('show', 'on')
     $('#enemy').css('display', 'none')
@@ -64,8 +65,9 @@ Game.prototype.showInv = function() {
 Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
-      console.log('Taking Damage!')
-      this.playerCurrentHp -= 1
+      this.level = document.getElementById('level').getAttribute('level')
+      console.log('Taking' + this.level + 'Damage!')
+      this.playerCurrentHp -= this.level
       this.updateStats()
     }
   }
@@ -80,7 +82,7 @@ function Enemy() {
   this.hp          = 100
   this.deaths      = 0
   this.pos         = 80.0
-  this.playerLevel = 1
+  this.level       = 1
   this.$avatar     = $('#enemy')
   this.$healthBar  = $('#enemy-health-bar')
   console.log(this)
@@ -93,8 +95,9 @@ function Enemy() {
 Enemy.prototype.recreate = function() {
   // Recyles the enemy instance to be a new enemy
   if (this.deaths % 5 == 0) {
-    this.playerLevel += 1
-    $('#level').html('Level: ' + this.playerLevel)
+    this.level += 1
+    $('#level').html('Level: ' + this.level)
+    $('#level').attr('level', this.level)
   }
 
   // if (this.deaths % 10 == 0) {
@@ -104,7 +107,7 @@ Enemy.prototype.recreate = function() {
 
   console.log("New Mob #" + this.deaths)
   this.name = this.getName()
-  this.hp   = 100 * this.playerLevel
+  this.hp   = 100 * this.level
   this.pos  = 80.0
   this.$healthBar.attr('max', this.hp)
   this.$healthBar.attr('value', this.hp)
