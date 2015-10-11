@@ -9,47 +9,13 @@ body {
 	font-family: diablo;
 }
 
-#top-bar {
-	margin: 0 auto;
-	max-width: 1024px;
-	height: 10px;
-}
-
-#player-health {
-	background-color: black;
-	width: 33.33%;
-	height: 10px;
-	float: left;
-}
-
-#player-health-bar {
-	background-color: #880015;
-	height: 100%;
-	width: 100%;
-}
-
-#enemy-health {
-	background-color: black;
-	width: 33.33%;
-	height: 10px;
-	float: right;
-}
-
-#enemy-health-bar {
-	background-color: #1C8C3E;
-	height: 100%;
-	width: 100%;
-}
-
 .game-container {
 	display: block;
 	margin: 0 auto;
 	max-height: 580px;
-	margin-top: 30px;
 }
 
 #content {
-	border: 1px solid white;
 	background-image: url(../assets/background-outside-1.png);
 	background-size: cover;
 	height: 580px;
@@ -58,20 +24,46 @@ body {
 	margin: 0 auto;
 }
 
-#player {
+#level {
 	position: absolute;
-	margin: 5px;
-	padding: 5px;
-	bottom:0;
-	left: 50px;
+	left: 43%;
+	font-size: 24px;
 }
 
-#enemy {
-	position: absolute;
-	margin: 5px;
-	padding: 5px;
-	bottom: 0;
-	right: 50px;
+#top-bar {
+	margin: 0 auto;
+	max-width: 1024px;
+	height: 10px;
+}
+
+#player-health {
+	width: 33.33%;
+	height: 10px;
+	float: left;
+}
+
+progress#player-health-bar {
+	-webkit-appearance: none;
+  appearance: none;
+	width: 100%;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: #880015;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+#enemy-health {
+	width: 33.33%;
+	height: 10px;
+	float: right;
+}
+
+progress#enemy-health-bar {
+  -webkit-appearance: none;
+  appearance: none;
+	width: 100%;
 }
 
 #buttons {
@@ -91,4 +83,20 @@ body {
 	width: 33.33%;
 	float: left;
 	color: black;
+}
+
+#player {
+	position: absolute;
+	margin: 5px;
+	padding: 5px;
+	bottom:0;
+	left: 5%;
+}
+
+#enemy {
+	position: absolute;
+	margin: 5px;
+	padding: 5px;
+	bottom: 0;
+	left: 80%;
 }

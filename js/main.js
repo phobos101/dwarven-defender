@@ -18,6 +18,7 @@ function Game() {
   this.xpToLevel       = 1000 * (this.playerLevel * 2);
   this.$statButton     = $('#stats-btn')
   this.$invButton      = $('#inv-btn')
+  $('#level').html('Level: ' + this.playerLevel)
 
   this.updateStats();
   this.spawnEnemy();
@@ -29,8 +30,8 @@ function Game() {
 }
 
 Game.prototype.updateStats = function () {
-  $('#player-health-bar').css('width', this.playerCurrentHp + '%')
-  $('#level').html('Level: ' + this.playerLevel)
+  $('#player-health-bar').attr('max', this.playerMaxHp)
+  $('#player-health-bar').attr('value', this.playerCurrentHp)
 }
 
 Game.prototype.spawnEnemy = function() {
@@ -64,6 +65,7 @@ function Enemy() {
   this.hp          = 100
   this.deaths      = 0
   this.pos         = 80.0
+  this.playerLevel = 1
   this.$avatar     = $('#enemy')
   this.$healthBar  = $('#enemy-health-bar')
   console.log(this)
@@ -75,17 +77,22 @@ function Enemy() {
 
 Enemy.prototype.recreate = function() {
   // Recyles the enemy instance to be a new enemy
+  if (this.deaths % 5 == 0) {
+    this.playerLevel += 1
+    $('#level').html('Level: ' + this.playerLevel)
+  }
+
   console.log("New Mob #" + this.deaths)
-  this.$healthBar.css('width', '100%')
   this.name = this.getName()
-  this.hp   = 100
+  this.hp   = 100 * this.playerLevel
   this.pos  = 80.0
+  this.$healthBar.attr('max', this.hp)
+  this.$healthBar.attr('value', this.hp)
   console.log(this)
 
   this.$avatar.attr('src', 'assets/enemy_side_transparent.gif')
   this.$avatar.fadeIn(200)
 
-  // this.$avatar.on("click", this.click.bind(this))
   this.moveTimer = setInterval(this.move.bind(this), 100)
 }
 
@@ -113,12 +120,15 @@ Enemy.prototype.getName = function() {
 }
 
 Enemy.prototype.click = function() {
-  console.log(this.hp)
-  if (this.hp > 1) {
+  if (this.hp > 11) {
     this.hp -= 10;
-    this.$healthBar.css('width', this.hp + '%')
+    this.$healthBar.attr('value', this.hp)
+    console.log(this.hp)
   }
-  else if (this.hp == 0) {
+  else if (this.hp == 10) {
+    this.hp -= 10;
+    this.$healthBar.attr('value', this.hp)
+    console.log(this.hp)
     console.log("Death!")
     document.getElementById('enemy').removeAttribute('damage')
     this.deaths++
