@@ -25,8 +25,8 @@ function Game() {
 
   this.playerAtk       = 10
   this.playerDfs       = 0
-  this.playerDge       = 0.0
-  this.playerPrs       = 0.0
+  this.playerDge       = 5.0
+  this.playerPrs       = 1.0
 
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
@@ -128,11 +128,20 @@ Game.prototype.showInv = function() {
 }
 
 Game.prototype.takeDmg = function() {
+  var randomNum = (Math.random()*100).toFixed(2)
+  console.log(randomNum)
+
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
-      console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs + ' defence = ' + (this.level - this.playerDfs))
-      this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
-      this.updateStats()
+      if (randomNum > this.playerDge) {
+        console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs 
+                   + ' defence = ' + (this.level - this.playerDfs))
+        this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
+        this.updateStats()
+      }
+      else {
+        console.log('Player dodges!')
+      }
     }
   }
   if (this.playerCurrentHp < 1) {
@@ -174,7 +183,6 @@ Game.prototype.spawnEnemy = function() {
   this.enemyPos  = 80.0
   $('#enemy-health-bar').attr('max', this.enemyHp)
   $('#enemy-health-bar').attr('value', this.enemyHp)
-  console.log(this)
 
   // Position and show new enemy
   $('#enemy').css("left", this.enemyPos + '%')
@@ -186,9 +194,12 @@ Game.prototype.spawnEnemy = function() {
 }
 
 Game.prototype.moveEnemy = function() {
+  var baseMove = 0.3
+  var computedMove = (baseMove - (this.playerPrs / 100))
+
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (this.enemyPos > 30) {
-      this.enemyPos -= 0.2;
+      this.enemyPos -= computedMove;
       $('#enemy').css("left", this.enemyPos + '%')
     }
     else {
