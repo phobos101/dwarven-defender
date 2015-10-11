@@ -15,7 +15,6 @@ function Game() {
   this.playerXp        = 0;
   this.playerLevel     = 1;
   this.playerGold      = 0;
-  this.xpToLevel       = 1000 * (this.playerLevel * 2);
   this.$statButton     = $('#stats-btn')
   this.$invButton      = $('#inv-btn')
   $('#level').html('Level: ' + this.playerLevel)
@@ -39,20 +38,36 @@ Game.prototype.spawnEnemy = function() {
 }
 
 Game.prototype.showStats = function() {
-  // Stats Button clicked
   console.log("Stats button clicked!")
+  if (document.getElementById('stats-window').hasAttribute('show')) {
+    // Hide the window if open
+    $('#stats-window').css('display', 'none')
+    document.getElementById('stats-window').removeAttribute('show')
+    $('#enemy').css('display', 'block')
+    $('#player').css('display', 'block')
+    document.getElementById('enemy').removeAttribute('paused')
+  }
+  else {
+    // Show the stats window and pause trhe game
+    $('#stats-window').css('display', 'block')
+    $('#stats-window').attr('show', 'on')
+    $('#enemy').css('display', 'none')
+    $('#player').css('display', 'none')
+    $('#enemy').attr('paused', 'on')
+  }
 }
 
 Game.prototype.showInv = function() { 
-  // Inventory button clicked
   console.log("Inventory button clicked!")
 }
 
 Game.prototype.takeDmg = function() {
-  if (document.getElementById('enemy').hasAttribute('damage')) {
-    console.log('Takeing Damage!')
-    this.playerCurrentHp -= 1
-    this.updateStats()
+  if (!document.getElementById('enemy').hasAttribute('paused')) {
+    if (document.getElementById('enemy').hasAttribute('damage')) {
+      console.log('Taking Damage!')
+      this.playerCurrentHp -= 1
+      this.updateStats()
+    }
   }
 }
 
@@ -82,6 +97,11 @@ Enemy.prototype.recreate = function() {
     $('#level').html('Level: ' + this.playerLevel)
   }
 
+  // if (this.deaths % 10 == 0) {
+  //   // boss battle
+
+  // }
+
   console.log("New Mob #" + this.deaths)
   this.name = this.getName()
   this.hp   = 100 * this.playerLevel
@@ -97,12 +117,14 @@ Enemy.prototype.recreate = function() {
 }
 
 Enemy.prototype.move = function() {
-  if (this.pos > 30) {
-    this.pos -= 0.2;
-    this.$avatar.css("left", this.pos + '%')
-  }
-  else {
-    this.$avatar.attr('damage', 'on')
+  if (!document.getElementById('enemy').hasAttribute('paused')) {
+    if (this.pos > 30) {
+      this.pos -= 0.2;
+      this.$avatar.css("left", this.pos + '%')
+    }
+    else {
+      this.$avatar.attr('damage', 'on')
+    }
   }
 }
 
