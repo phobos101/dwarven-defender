@@ -20,7 +20,14 @@ function Game() {
   this.playerXp        = 0
   this.level           = 1
   this.playerGold      = 0
+  this.upgradePoints   = 0
   this.kills           = 0
+
+  this.playerAtk       = 10
+  this.playerDfs       = 0
+  this.playerDge       = 0.0
+  this.playerPrs       = 0.0
+
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
   this.$statButton     = $('#stats-btn')
@@ -34,7 +41,10 @@ function Game() {
   this.$statButton.on("click", this.showStats.bind(this))
   this.$invButton.on("click", this.showInv.bind(this))
   $('#enemy').on("click", this.clickEnemy.bind(this))
-
+  $('#atk-btn').on('click', this.upgradeAttack.bind(this))
+  $('#dfs-btn').on('click', this.upgradeDefence.bind(this))
+  $('#dge-btn').on('click', this.upgradeDodge.bind(this))
+  $('#prs-btn').on('click', this.upgradePresence.bind(this))
   $('#dev-kill-player').on('click', this.killPlayer.bind(this))
 
   this.damageTimer = setInterval(this.takeDmg.bind(this), 500)
@@ -68,6 +78,48 @@ Game.prototype.showStats = function() {
     $('#enemy').css('display', 'none')
     $('#player').css('display', 'none')
     $('#enemy').attr('paused', 'on')
+
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#attack').html('Attack: ' + this.playerAtk)
+    $('#defence').html('Defence: ' + this.playerDfs)
+    $('#dodge').html('Dodge: ' + this.playerDge)
+    $('#presence').html('Presence: ' + this.playerPrs)
+  }
+}
+
+Game.prototype.upgradeAttack = function() {
+  if (this.upgradePoints > 0) {
+    this.upgradePoints -= 1
+    this.playerAtk += 1
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#attack').html('Attack: ' + this.playerAtk)
+  }
+}
+
+Game.prototype.upgradeDefence = function() {
+  if (this.upgradePoints > 0) {
+    this.upgradePoints -= 1
+    this.playerDfs += 1
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#defence').html('Defence: ' + this.playerDfs)
+  }
+}
+
+Game.prototype.upgradeDodge = function() {
+  if (this.upgradePoints > 0) {
+    this.upgradePoints -= 1
+    this.playerDge += 0.1
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#dodge').html('Dodge: ' + this.playerDge)
+  }
+}
+
+Game.prototype.upgradePresence = function() {
+  if (this.upgradePoints > 0) {
+    this.upgradePoints -= 1
+    this.playerPrs += 0.1
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#presence').html('Presence: ' + this.playerPrs)
   }
 }
 
@@ -78,8 +130,8 @@ Game.prototype.showInv = function() {
 Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
-      console.log('Taking ' + this.level + ' damage!')
-      this.playerCurrentHp -= this.level
+      console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs + ' defence = ' + (this.level - this.playerDfs))
+      this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
       this.updateStats()
     }
   }
@@ -108,6 +160,7 @@ Game.prototype.spawnEnemy = function() {
 
   if ((this.kills % 5 == 0) && this.kills != 0) {
     this.level += 1
+    this.upgradePoints += 5
     $('#level').html('Level: ' + this.level)
     $('#level').attr('level', this.level)
   }
@@ -145,23 +198,22 @@ Game.prototype.moveEnemy = function() {
 }
 
 Game.prototype.clickEnemy = function() {
-  if (this.enemyHp > 11) {
-    this.enemyHp -= 10;
-    $('#enemy-health-bar').attr('value', this.enemyHp)
+  if (this.enemyHp > 0) {
+    this.enemyHp -= this.playerAtk;
+    if (this.enemyHp > 0) {
+      $('#enemy-health-bar').attr('value', this.enemyHp)
+    }
+    else {
+      $('#enemy-health-bar').attr('value', 0)
+      console.log("Death!")
+      document.getElementById('enemy').removeAttribute('damage')
+      this.kills++
+      $('#enemy').fadeOut(1000)
+      setTimeout(this.spawnEnemy.bind(this), 1100)
+      clearInterval(this.moveTimer)
+      this.enemyHp = -1
+    }
     console.log(this.enemyHp)
-  }
-  else if (this.enemyHp == 10) {
-    this.enemyHp -= 10;
-    $('#enemy-health-bar').attr('value', this.enemyHp)
-    console.log(this.enemyHp)
-    console.log("Death!")
-    document.getElementById('enemy').removeAttribute('damage')
-    this.kills++
-    $('#enemy').fadeOut(1000)
-    setTimeout(this.spawnEnemy.bind(this), 1100)
-    clearInterval(this.moveTimer)
-    var fading = true;
-    this.enemyHp = -1 // Prevent repeat recreates
   }
   else {
     console.log('Enemy already fading')
