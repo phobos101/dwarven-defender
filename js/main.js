@@ -17,7 +17,6 @@ $(function() {
 
   setInterval(changeBackground, 1000)
   function changeBackground () {
-    debugger;
     $('#content').toggleClass('background-change')
   }
 
@@ -26,6 +25,7 @@ $(function() {
 
 function start() {
   soundManager.stopAll()
+  $('#player').off()
   var game = new Game()
 }
 
@@ -50,6 +50,12 @@ function Game() {
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
   this.image           = 1
+
+  $('#intro-text').css('display', 'none')
+  $('#stats-btn').css('display', 'block')
+  $('#stats-btn').css('float', 'right')
+  $('#henchmen-btn').css('display', 'block')
+  $('#henchmen-btn').css('float', 'left')
 
   $('#player').attr('src', 'assets/player_side_transparent.gif')
   $('#player').css('left', '5%')
@@ -118,6 +124,12 @@ Game.prototype.gameOver = function() {
     $('#player-dead-div').css('display', 'block')
     $('#game-stats').html('You reached level ' + this.level + '<br />'
                          +'You killed ' + this.kills + ' enemies')
+    $('#refresh').on('click', this.replay) 
+}
+
+Game.prototype.replay = function() {
+  soundManager.stopAll()
+  location.reload(true)
 }
 
 //-------------------------------------------
@@ -130,7 +142,10 @@ Game.prototype.showStats = function() {
     this.playSound('click-low')
     console.log("Game resumed")
     $('#stats-window').css('display', 'none')
+    $('#stats-btn').css('margin', '')
+    $('#stats-btn').css('float', 'right')
     document.getElementById('stats-window').removeAttribute('show')
+    $('#top-bar').css('display', 'block')
     $('#enemy').css('display', 'block')
     $('#player').css('display', 'block')
     $('#henchmen-btn').css('display', 'block')
@@ -141,7 +156,10 @@ Game.prototype.showStats = function() {
     console.log("Game paused")
     this.playSound('click-high')
     $('#stats-window').css('display', 'block')
+    $('#stats-btn').css('margin', '0 auto')
+    $('#stats-btn').css('float', '')
     $('#stats-window').attr('show', 'on')
+    $('#top-bar').css('display', 'none')
     $('#enemy').css('display', 'none')
     $('#player').css('display', 'none')
     $('#henchmen-btn').css('display', 'none')
@@ -161,22 +179,30 @@ Game.prototype.showHenchmen = function() {
     this.playSound('click-low')
     console.log("Game resumed")
     $('#henchmen-window').css('display', 'none')
+    $('#henchmen-btn').css('margin', '')
+    $('#henchmen-btn').css('float', 'left')
     document.getElementById('henchmen-window').removeAttribute('show')
+    $('#top-bar').css('display', 'block')
     $('#enemy').css('display', 'block')
     $('#player').css('display', 'block')
     $('#stats-btn').css('display', 'block')
     document.getElementById('enemy').removeAttribute('paused')
   }
   else {
-    // Show the stats window and pause the game
+    // Show the henchmen window and pause the game
     this.playSound('click-high')
     console.log("Game paused")
     $('#henchmen-window').css('display', 'block')
+    $('#henchmen-btn').css('margin', '0 auto')
+    $('#henchmen-btn').css('float', '')
     $('#henchmen-window').attr('show', 'on')
+    $('#top-bar').css('display', 'none')
     $('#enemy').css('display', 'none')
     $('#player').css('display', 'none')
     $('#stats-btn').css('display', 'none')
     $('#enemy').attr('paused', 'on')
+
+    $('#hench-gold').html('Gold: ' + this.playerGold)
   }
 }
 
