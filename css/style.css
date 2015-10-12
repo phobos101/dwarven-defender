@@ -161,17 +161,15 @@ progress#enemy-health-bar {
 
 #player {
 	position: absolute;
-	max-width: 230px;
-	max-height: 270px;
+	max-height: 280px;
 	margin: 5px;
 	padding: 5px;
 	bottom:0;
-	left: 5%;
+	left: 43%;
 }
 
 #enemy {
 	position: absolute;
-	max-width: 230px;
 	max-height: 270px;
 	margin: 5px;
 	padding: 5px;

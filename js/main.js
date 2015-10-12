@@ -2,17 +2,38 @@
 //                    START
 //-------------------------------------------
 $(function() {
-  $('#start').on('click', start)
-});
-
-function start() {
-  $('#start').css('display', 'none')
-  var game = new Game()
-
   soundManager.setup({
     url: "/swf/",
     preferFlash: false
   })
+
+  setTimeout(function() {
+    var currentSound = soundManager.createSound({
+      id: 'menu',
+      url: './assets/sounds/menu-music.mp3',
+    });
+    currentSound.play();
+  }, 500)
+
+  var image = 1
+  setInterval(changeBackground, 1000)
+  function changeBackground () {
+    if (image == 1) {
+      $('#content').css('background-image', 'url(../assets/background1.png)')
+      image = 2
+    }
+    else {
+      $('#content').css('background-image', 'url(../assets/background2.png)')
+      image = 1
+    }
+  }
+
+  $('#player').on('click', start)
+});
+
+function start() {
+  soundManager.stopAll()
+  var game = new Game()
 }
 
 //-------------------------------------------
@@ -25,7 +46,7 @@ function Game() {
   this.playerXp        = 0
   this.level           = 1
   this.playerGold      = 0
-  this.upgradePoints   = 1000
+  this.upgradePoints   = 0
   this.kills           = 0
 
   this.playerAtk       = 10
@@ -35,6 +56,10 @@ function Game() {
 
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
+  this.image           = 1
+
+  $('#player').attr('src', 'assets/player_side_transparent.gif')
+  $('#player').css('left', '5%')
 
   $('#level').html('Level: ' + this.level)
   $('#gold').html('Gold: ' + this.playerGold)
@@ -55,8 +80,7 @@ function Game() {
   $('#alaris').on('click', this.buyAlaris.bind(this))
   $('#terna').on('click', this.buyTerna.bind(this))
   
-  this.damageTimer = setInterval(this.takeDmg.bind(this), 500)
-
+  this.damageTimer     = setInterval(this.takeDmg.bind(this), 500)
   // this.playSound('game-music')
 }
 
@@ -95,7 +119,7 @@ Game.prototype.takeDmg = function() {
 
 Game.prototype.gameOver = function() {
     clearInterval(this.damageTimer)
-
+    this.playSound('orchestral_revolution')
     $('#enemy').attr('paused', 'on')
     $('#player-alive-div').css('display', 'none')
     $('#player-dead-div').css('display', 'block')
@@ -328,7 +352,7 @@ Game.prototype.clickEnemy = function() {
 }
 
 //-------------------------------------------
-//                  SOUNDS 
+//           SOUNDS AND ASSETS
 //-------------------------------------------
 
 
@@ -346,4 +370,3 @@ Game.prototype.playSound = function(sound) {
   }
   this._currentSound.play();
 }
-
