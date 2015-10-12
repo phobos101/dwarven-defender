@@ -12,13 +12,12 @@ body {
 .game-container {
 	display: block;
 	margin: 0 auto;
-	max-height: 768px;
 }
 
 #content {
 	background-image: url(../assets/background2.png);
 	background-size: cover;
-	height: 768px;
+	height: 500px;
 	max-width: 1024px;
 	position: relative;
 	margin: 0 auto;
@@ -187,7 +186,7 @@ progress#enemy-health-bar {
 #player-dead-div {
 	background-color: black;
 	color: #880015;
-	height: 768px;
+	height: 500px;
 	max-width: 1024px;
 	position: relative;
 	margin: 0 auto;
