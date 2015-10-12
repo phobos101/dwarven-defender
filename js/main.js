@@ -8,6 +8,11 @@ $(function() {
 function start() {
   $('#start').css('display', 'none')
   var game = new Game()
+
+  soundManager.setup({
+    url: "/swf/",
+    preferFlash: false
+  })
 }
 
 //-------------------------------------------
@@ -51,6 +56,8 @@ function Game() {
   $('#terna').on('click', this.buyTerna.bind(this))
   
   this.damageTimer = setInterval(this.takeDmg.bind(this), 500)
+
+  // this.playSound('game-music')
 }
 
 Game.prototype.killPlayer = function() {
@@ -71,6 +78,7 @@ Game.prototype.takeDmg = function() {
         console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs 
                    + ' defence = ' + ((this.level+5*1.1) - this.playerDfs))
         this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
+        this.playSound('player-hit')
         this.updateStats()
       }
       else {
@@ -80,6 +88,7 @@ Game.prototype.takeDmg = function() {
   }
   if (this.playerCurrentHp < 1) {
     // Game over
+    this.playSound('player-death')
     this.gameOver()
   }
 }
@@ -101,6 +110,7 @@ Game.prototype.gameOver = function() {
 Game.prototype.showStats = function() {
   if (document.getElementById('stats-window').hasAttribute('show')) {
     // Hide the window if open
+    this.playSound('click-low')
     console.log("Game resumed")
     $('#stats-window').css('display', 'none')
     document.getElementById('stats-window').removeAttribute('show')
@@ -112,6 +122,7 @@ Game.prototype.showStats = function() {
   else {
     // Show the stats window and pause the game
     console.log("Game paused")
+    this.playSound('click-high')
     $('#stats-window').css('display', 'block')
     $('#stats-window').attr('show', 'on')
     $('#enemy').css('display', 'none')
@@ -130,6 +141,7 @@ Game.prototype.showStats = function() {
 Game.prototype.showHenchmen = function() {
   if (document.getElementById('henchmen-window').hasAttribute('show')) {
     // Hide the window if open
+    this.playSound('click-low')
     console.log("Game resumed")
     $('#henchmen-window').css('display', 'none')
     document.getElementById('henchmen-window').removeAttribute('show')
@@ -140,6 +152,7 @@ Game.prototype.showHenchmen = function() {
   }
   else {
     // Show the stats window and pause the game
+    this.playSound('click-high')
     console.log("Game paused")
     $('#henchmen-window').css('display', 'block')
     $('#henchmen-window').attr('show', 'on')
@@ -156,6 +169,7 @@ Game.prototype.showHenchmen = function() {
 
 Game.prototype.upgradeAttack = function() {
   if (this.upgradePoints > 0) {
+    this.playSound('click-high')
     this.upgradePoints -= 1
     this.playerAtk += 1
     $('#points').html('Points to spend: ' + this.upgradePoints)
@@ -165,6 +179,7 @@ Game.prototype.upgradeAttack = function() {
 
 Game.prototype.upgradeDefence = function() {
   if (this.upgradePoints > 0) {
+    this.playSound('click-high')
     this.upgradePoints -= 1
     this.playerDfs += 1
     $('#points').html('Points to spend: ' + this.upgradePoints)
@@ -174,6 +189,7 @@ Game.prototype.upgradeDefence = function() {
 
 Game.prototype.upgradeDodge = function() {
   if (this.upgradePoints > 0) {
+    this.playSound('click-high')
     this.upgradePoints -= 1
     this.playerDge += 0.1
     $('#points').html('Points to spend: ' + this.upgradePoints)
@@ -183,6 +199,7 @@ Game.prototype.upgradeDodge = function() {
 
 Game.prototype.upgradePresence = function() {
   if (this.upgradePoints > 0) {
+    this.playSound('click-high')
     this.upgradePoints -= 1
     this.playerPrs += 0.1
     $('#points').html('Points to spend: ' + this.upgradePoints)
@@ -196,6 +213,7 @@ Game.prototype.upgradePresence = function() {
 
 Game.prototype.buyDarius = function() {
   if (this.playerGold >= 100) {
+    this.playSound('click-high')
     console.log('Darius Hired!')
     this.dariusTimer = setInterval(this.clickEnemy.bind(this), 1000)
     this.playerGold -= 100
@@ -207,6 +225,7 @@ Game.prototype.buyDarius = function() {
 
 Game.prototype.buyAlaris = function() {
   if (this.playerGold >= 1000) {
+    this.playSound('click-high')
     console.log('Alaris Hired!')
     this.alarisTimer = setInterval(this.clickEnemy.bind(this), 200)
     this.playerGold -= 1000
@@ -218,6 +237,7 @@ Game.prototype.buyAlaris = function() {
 
 Game.prototype.buyTerna = function() {
   if (this.playerGold >= 10000) {
+    this.playSound('click-high')
     console.log('Terna Hired!')
     this.ternaTimer = setInterval(this.clickEnemy.bind(this), 100)
     this.playerGold -= 10000
@@ -236,6 +256,7 @@ Game.prototype.spawnEnemy = function() {
 
   if ((this.kills % 5 == 0) && this.kills != 0) {
     this.level += 1
+    this.playSound('levelup')
     this.upgradePoints += 5
     $('#level').html('Level: ' + this.level)
     $('#level').attr('level', this.level)
@@ -279,12 +300,14 @@ Game.prototype.clickEnemy = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (this.enemyHp > 0) {
       this.enemyHp -= this.playerAtk;
+      this.playSound('enemy-hit')
       if (this.enemyHp > 0) {
         $('#enemy-health-bar').attr('value', this.enemyHp)
       }
       else {
         var randomNum = Math.ceil(Math.random()*20)
         $('#enemy-health-bar').attr('value', 0)
+        this.playSound('enemy-death')
         console.log("Death!")
         document.getElementById('enemy').removeAttribute('damage')
         this.kills++
@@ -300,4 +323,25 @@ Game.prototype.clickEnemy = function() {
       console.log('Enemy already fading')
     }
   }
-} 
+}
+
+//-------------------------------------------
+//                  SOUNDS 
+//-------------------------------------------
+
+
+Game.prototype.playSound = function(sound) {
+  soundManager.stopAll()
+  var value = sound
+  this._currentSound = null
+
+  console.log("playing: " + "./assets/sounds/" + value + ".wav");
+  if (this._currentSound == null) {
+    this._currentSound = soundManager.createSound({
+      id: value,
+      url: './assets/sounds/' + value + '.mp3'
+    });
+  }
+  this._currentSound.play();
+}
+
