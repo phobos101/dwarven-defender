@@ -23,6 +23,10 @@ body {
 	margin: 0 auto;
 }
 
+#content.background-change {
+	background-image: url(../assets/background1.png);
+}
+
 #start-button {
 	position: absolute;
 	width: 50%;

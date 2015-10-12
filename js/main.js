@@ -15,17 +15,10 @@ $(function() {
     currentSound.play();
   }, 500)
 
-  var image = 1
   setInterval(changeBackground, 1000)
   function changeBackground () {
-    if (image == 1) {
-      $('#content').css('background-image', 'url(../assets/background1.png)')
-      image = 2
-    }
-    else {
-      $('#content').css('background-image', 'url(../assets/background2.png)')
-      image = 1
-    }
+    debugger;
+    $('#content').toggleClass('background-change')
   }
 
   $('#player').on('click', start)
