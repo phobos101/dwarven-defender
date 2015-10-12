@@ -29,10 +29,10 @@
 					</ul>
 
 					<div id="upgrade-buttons">
-						<button class="upgrade-button" id="atk-btn">Upgrade Attack</button>
-						<button class="upgrade-button" id="dfs-btn">Upgrade Defence</button>
-						<button class="upgrade-button" id="dge-btn">Upgrade Dodge</button>
-						<button class="upgrade-button" id="prs-btn">Upgrade Presence</button>
+						<button class="button" id="atk-btn">Upgrade Attack</button>
+						<button class="button" id="dfs-btn">Upgrade Defence</button>
+						<button class="button" id="dge-btn">Upgrade Dodge</button>
+						<button class="button" id="prs-btn">Upgrade Presence</button>
 <!-- 				<button class="upgrade-button" id="crm-btn">Upgrade Charm</button>
 						<button class="upgrade-button" id="tct-btn">Upgrade Tactics</button> -->
 					</div>
@@ -48,6 +48,8 @@
 
 				<div id="henchmen-window" class="window">
 
+				<p id="hench-gold"></p>
+
 				<ul>
 					<li>Darius the Lame - 100g</li>
 					<li>Alaris the Meh  - 1000g</li>
@@ -55,17 +57,22 @@
 				</ul>
 
 					<div id="henchmen-buttons">
-						<button class="henchmen-button" id="darius">Hire Darius (1 click per second)</button>
-						<button class="henchmen-button" id="alaris">Hire Alaris (5 click per second)</button>
-						<button class="henchmen-button" id="terna">Hire Terna (10 click per second)</button>
+						<button class="button" id="darius">Hire Darius (1 click per second)</button>
+						<button class="button" id="alaris">Hire Alaris (5 click per second)</button>
+						<button class="button" id="terna">Hire Terna (10 click per second)</button>
 					</div>
 
 				</div>
 
-				<div id="level"><h1></h1></div>
-				<div id="gold"><h1></h1></div>
+				<div id="intro-text">
+					<h2>Help me protect my stronghold </h2>
+					<h2>from the goblin horde!</h2>
+					<h2>Click me to begin.</h2>
+				</div>
 
 				<div id="top-bar"> 
+					<div id="level"><h1></h1></div>
+					<div id="gold"><h1></h1></div>
 					<div id="player-health"><progress id="player-health-bar" value="100" max="100"></progress></div>
 					<div id="enemy-health"><progress id="enemy-health-bar" value="100" max="100"></progress></div>
 				</div>
@@ -74,15 +81,17 @@
 				<img src="" id="enemy">
 
 				<div id="buttons">
-					<button class="button" id="henchmen-btn">Henchmen</button>
-					<button class="button" id="stats-btn">Stats</button>
+					<button class="button" id="henchmen-btn" style="display: none;">Henchmen</button>
+					<button class="button" id="stats-btn" style="display: none;">Stats</button>
 				</div>
 
 			</div> <!-- End of player alive div -->
 
 			<div id="player-dead-div" style="display: none;">
-				<h1>Game Over</h1>
-				<p id="game-stats">test</p>
+				<h1>GAME OVER</h1>
+				<p id="game-stats"></p>
+
+				<button class="button" id="refresh">Play Again</button>
 			</div> <!-- End of player dead div -->
 
 		</div> <!-- End of content div -->
