@@ -25,10 +25,9 @@ body {
 
 #start-button {
 	position: absolute;
-	color: black;
-	width: 20%;
-	top: 40%;
-	left: 40%
+	width: 50%;
+	top: 43%;
+	left: 43%
 }
 
 .window {
@@ -137,15 +136,14 @@ progress#enemy-health-bar {
 }
 
 .button {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0px;
   color: #ffffff;
   font-size: 20px;
-  background: #c24242;
+  background: #880015;
   padding: 3px 20px 3px 20px;
   border-bottom: solid #666666 1px;
   text-decoration: none;
+  min-width: 32px;
+  width: 33.33%;
 }
 
 .button:hover {
@@ -154,21 +152,17 @@ progress#enemy-health-bar {
 }
 
 #stats-btn {
-  min-width: 32px;
-  width: 33.33%;
   float: right;
-  color: black;
 }
 
 #henchmen-btn {
-	min-width: 32px;
-	width: 33.33%;
 	float: left;
-	color: black;
 }
 
 #player {
 	position: absolute;
+	max-width: 230px;
+	max-height: 270px;
 	margin: 5px;
 	padding: 5px;
 	bottom:0;
@@ -177,6 +171,8 @@ progress#enemy-health-bar {
 
 #enemy {
 	position: absolute;
+	max-width: 230px;
+	max-height: 270px;
 	margin: 5px;
 	padding: 5px;
 	bottom: 0;

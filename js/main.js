@@ -25,7 +25,7 @@ function Game() {
   this.playerXp        = 0
   this.level           = 1
   this.playerGold      = 0
-  this.upgradePoints   = 0
+  this.upgradePoints   = 1000
   this.kills           = 0
 
   this.playerAtk       = 10
@@ -278,13 +278,13 @@ Game.prototype.spawnEnemy = function() {
   $('#enemy').fadeIn(200)
 
   // Start moveing enemy towards player
-  this.moveTimer = setInterval(this.moveEnemy.bind(this), 100)
+  this.moveTimer = setInterval(this.moveEnemy.bind(this), 200)
 }
 
 Game.prototype.moveEnemy = function() {
-  var baseMove = 0.3
+  var baseMove = 1.01
   var computedMove = (baseMove - (this.playerPrs / 100))
-
+  $('#enemy').attr('src', 'assets/enemy_side_transparent.gif')
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (this.enemyPos > 30) {
       this.enemyPos -= computedMove;
@@ -301,6 +301,7 @@ Game.prototype.clickEnemy = function() {
     if (this.enemyHp > 0) {
       this.enemyHp -= this.playerAtk;
       this.playSound('enemy-hit')
+      $('#enemy').attr('src', 'assets/enemy-hit.gif')
       if (this.enemyHp > 0) {
         $('#enemy-health-bar').attr('value', this.enemyHp)
       }
@@ -308,6 +309,7 @@ Game.prototype.clickEnemy = function() {
         var randomNum = Math.ceil(Math.random()*20)
         $('#enemy-health-bar').attr('value', 0)
         this.playSound('enemy-death')
+        $('#enemy').attr('src', 'assets/enemy-dead.gif')
         console.log("Death!")
         document.getElementById('enemy').removeAttribute('damage')
         this.kills++
