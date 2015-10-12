@@ -12,13 +12,13 @@ body {
 .game-container {
 	display: block;
 	margin: 0 auto;
-	max-height: 580px;
+	max-height: 768px;
 }
 
 #content {
 	background-image: url(../assets/background2.png);
 	background-size: cover;
-	height: 580px;
+	height: 768px;
 	max-width: 1024px;
 	position: relative;
 	margin: 0 auto;
@@ -137,6 +137,23 @@ progress#enemy-health-bar {
 	margin: 0 auto;
 }
 
+.button {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0px;
+  color: #ffffff;
+  font-size: 20px;
+  background: #c24242;
+  padding: 3px 20px 3px 20px;
+  border-bottom: solid #666666 1px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: #fc3c3c;
+  text-decoration: none;
+}
+
 #stats-btn {
   min-width: 32px;
   width: 33.33%;
@@ -170,7 +187,7 @@ progress#enemy-health-bar {
 #player-dead-div {
 	background-color: black;
 	color: #880015;
-	height: 580px;
+	height: 768px;
 	max-width: 1024px;
 	position: relative;
 	margin: 0 auto;
