@@ -97,12 +97,18 @@ Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
       var randomNum = (Math.random()*100).toFixed(2)
+      var dmgTaken = Math.round((this.level+5*1.1))
       if (randomNum > this.playerDge) {
-        console.log('Taking ' + (this.level+5*1.1) + ' damage! Player has ' + this.playerDfs 
-                   + ' defence = ' + ((this.level+5*1.1) - this.playerDfs))
-        this.playerCurrentHp -= ((this.level+5*1.1) - this.playerDfs)
-        this.playSound('player-hit')
+        console.log('Taking ' + dmgTaken + ' damage! Player has ' + this.playerDfs 
+                   + ' defence = ' + (dmgTaken - this.playerDfs))
+        this.playerCurrentHp -= (dmgTaken - this.playerDfs)
+        this.playSound('enemy-hit')
         this.updateStats()
+
+        // Show player floating damage
+        $('#player-damage-text').show()
+        $('#player-damage-text').html('-' + dmgTaken + ' hp')
+        $('#player-damage-text').fadeOut(400)
       }
       else {
         console.log('Player dodges!')
@@ -118,7 +124,6 @@ Game.prototype.takeDmg = function() {
 
 Game.prototype.gameOver = function() {
     clearInterval(this.damageTimer)
-    this.playSound('orchestral_revolution')
     $('#enemy').attr('paused', 'on')
     $('#player-alive-div').css('display', 'none')
     $('#player-dead-div').css('display', 'block')
@@ -344,16 +349,25 @@ Game.prototype.clickEnemy = function() {
     if (this.enemyHp > 0) {
       this.enemyHp -= this.playerAtk;
       this.playSound('enemy-hit')
+
+      // Show floating damage
+      $('#enemy-damage-text').show()
+      $('#enemy-damage-text').css("left", (this.enemyPos + 5) + '%')
+      $('#enemy-damage-text').css("top", 35 + '%')
+      $('#enemy-damage-text').html('-' + this.playerAtk + ' hp')
+      $('#enemy-damage-text').fadeOut(400)
+
       $('#enemy').attr('src', 'assets/enemy-hit.gif')
       if (this.enemyHp > 0) {
         $('#enemy-health-bar').attr('value', this.enemyHp)
       }
       else {
+        // Mob dies
         var randomNum = Math.ceil(Math.random()*20)
         $('#enemy-health-bar').attr('value', 0)
         this.playSound('enemy-death')
+        $('#enemy-damage-text').html("")
         $('#enemy').attr('src', 'assets/enemy-dead.gif')
-        console.log("Death!")
         document.getElementById('enemy').removeAttribute('damage')
         this.kills++
         this.playerGold += this.level * randomNum
