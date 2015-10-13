@@ -10,6 +10,20 @@ The objective is to kill the enemy goblin by repeatedly tapping or clicking on i
 Upon killing an enemy, a new goblin will spawn. The game can be played indefinatly, 
 with the enemies HP and damage scaling exponentially as you progress.
 
+#####The Build
+
+I built Dwarven Defender using the following Languages:
+* HTML5
+* CSS
+* Javascript and jQuery
+
+I used the following tools:
+* Sublime Text 3
+* Google Chrome
+* Oh-My-ZSH
+* MS Paint
+* Paintbrush
+
 ![](./assets/screenshot1.png)
 
 #####Gameplay
