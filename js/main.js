@@ -88,11 +88,6 @@ function Game() {
   // this.playSound('game-music')
 }
 
-Game.prototype.killPlayer = function() {
-  // DEV DEBUG USE ONLY!
-  this.playerCurrentHp = 0
-}
-
 Game.prototype.updateStats = function () {
   $('#player-health-bar').attr('max', this.playerMaxHp)
   $('#player-health-bar').attr('value', this.playerCurrentHp)
@@ -102,9 +97,13 @@ Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
       var randomNum = (Math.random()*100).toFixed(2)
-      var dmgTaken = Math.round((this.level+5*1.1))
+      var dmgTaken = Math.round((this.level+5*1.2)) - this.playerDfs
+      if (dmgTaken < 1) {
+        // Prevents player with higher defence than enemy damage gaining HP
+        dmgTaken = 1
+      }
       if (randomNum > this.playerDge) {
-        this.playerCurrentHp -= (dmgTaken - this.playerDfs)
+        this.playerCurrentHp -= dmgTaken
         this.playSound('enemy-hit')
         this.updateStats()
 
@@ -329,7 +328,7 @@ Game.prototype.spawnEnemy = function() {
   // Set up new enemy
   if ((this.level % 5 == 0) && this.level != 1) {
     // Scale enemy HP with every 5 levels
-    this.enemyHpMod *= 1.1
+    this.enemyHpMod *= 1.2
   }
 
   this.enemyHp   = 100 * (this.level * this.enemyHpMod)

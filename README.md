@@ -1,4 +1,4 @@
-Dwarven Defender!
+#Dwarven Defender!
 Clicker Game.
 
 Enemy starts on the right and propressivly moves towards the player
