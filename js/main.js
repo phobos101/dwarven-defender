@@ -44,9 +44,9 @@ function Game() {
 
   this.playerAtk       = 10
   this.playerDfs       = 0
-  this.playerDge       = 89.8
-  this.playerPrs       = 89.8
-  this.playerCrt       = 99.8
+  this.playerDge       = 5.0
+  this.playerPrs       = 1.0
+  this.playerCrt       = 5.0
   this.playerMaxHp     = 100
 
   this.enemyHp         = 100 * this.level
@@ -104,8 +104,6 @@ Game.prototype.takeDmg = function() {
       var randomNum = (Math.random()*100).toFixed(2)
       var dmgTaken = Math.round((this.level+5*1.1))
       if (randomNum > this.playerDge) {
-        console.log('Taking ' + dmgTaken + ' damage! Player has ' + this.playerDfs 
-                   + ' defence = ' + (dmgTaken - this.playerDfs))
         this.playerCurrentHp -= (dmgTaken - this.playerDfs)
         this.playSound('enemy-hit')
         this.updateStats()
@@ -116,7 +114,9 @@ Game.prototype.takeDmg = function() {
         $('#player-damage-text').fadeOut(400)
       }
       else {
-        console.log('Player dodges!')
+        $('#player-damage-text').show()
+        $('#player-damage-text').html('Dodge!')
+        $('#player-damage-text').fadeOut(400)
       }
     }
   }
@@ -281,7 +281,6 @@ Game.prototype.upgradeVitality = function() {
 Game.prototype.buyDarius = function() {
   if (this.playerGold >= 100) {
     this.playSound('click-high')
-    console.log('Darius Hired!')
     this.dariusTimer = setInterval(this.clickEnemy.bind(this), 1000)
     this.playerGold -= 100
     $('#gold').html('Gold: ' + this.playerGold)
@@ -293,7 +292,6 @@ Game.prototype.buyDarius = function() {
 Game.prototype.buyAlaris = function() {
   if (this.playerGold >= 1000) {
     this.playSound('click-high')
-    console.log('Alaris Hired!')
     this.alarisTimer = setInterval(this.clickEnemy.bind(this), 200)
     this.playerGold -= 1000
     $('#gold').html('Gold: ' + this.playerGold)
@@ -305,7 +303,6 @@ Game.prototype.buyAlaris = function() {
 Game.prototype.buyTerna = function() {
   if (this.playerGold >= 10000) {
     this.playSound('click-high')
-    console.log('Terna Hired!')
     this.ternaTimer = setInterval(this.clickEnemy.bind(this), 100)
     this.playerGold -= 10000
     $('#gold').html('Gold: ' + this.playerGold)
@@ -333,7 +330,6 @@ Game.prototype.spawnEnemy = function() {
   if ((this.level % 5 == 0) && this.level != 1) {
     // Scale enemy HP with every 5 levels
     this.enemyHpMod *= 1.1
-    debugger;
   }
 
   this.enemyHp   = 100 * (this.level * this.enemyHpMod)
@@ -431,7 +427,6 @@ Game.prototype.playSound = function(sound) {
   var value = sound
   this._currentSound = null
 
-  console.log("playing: " + "./assets/sounds/" + value + ".wav");
   if (this._currentSound == null) {
     this._currentSound = soundManager.createSound({
       id: value,
