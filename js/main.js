@@ -40,12 +40,13 @@ function Game() {
   this.playerGold      = 0
   this.upgradePoints   = 0
   this.kills           = 0
+  this.enemyHpMod      = 1
 
   this.playerAtk       = 10
   this.playerDfs       = 0
-  this.playerDge       = 5.0
-  this.playerPrs       = 1.0
-  this.playerCrt       = 5.0
+  this.playerDge       = 89.8
+  this.playerPrs       = 89.8
+  this.playerCrt       = 99.8
   this.playerMaxHp     = 100
 
   this.enemyHp         = 100 * this.level
@@ -215,31 +216,49 @@ Game.prototype.upgradeDefence = function() {
 
 Game.prototype.upgradeDodge = function() {
   if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerDge += 0.1
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
+    if (this.playerDge.toFixed(2) < 90.00) {
+      this.playSound('click-high')
+      this.upgradePoints -= 1
+      this.playerDge += 0.1
+      $('#points').html('Points to spend: ' + this.upgradePoints)
+      $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
+    }
+    else {
+      $('#dge-btn').html('Max Level!')
+      $('#dge-btn').off()
+    }
   }
 }
 
 Game.prototype.upgradePresence = function() {
   if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerPrs += 0.1
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
+    if (this.playerPrs.toFixed(2) < 90.00) {
+      this.playSound('click-high')
+      this.upgradePoints -= 1
+      this.playerPrs += 0.1
+      $('#points').html('Points to spend: ' + this.upgradePoints)
+      $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
+    }
+    else {
+      $('#prs-btn').html('Max Level!')
+      $('#prs-btn').off()
+    }
   }
 }
 
 Game.prototype.upgradeAgility = function() {
   if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerCrt += 0.1
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
+    if (this.playerCrt.toFixed(2) < 100.00) {
+      this.playSound('click-high')
+      this.upgradePoints -= 1
+      this.playerCrt += 0.1
+      $('#points').html('Points to spend: ' + this.upgradePoints)
+      $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
+    }
+    else {
+      $('#crt-btn').html('Max Level!')
+      $('#crt-btn').off()
+    }
   }
 }
 
@@ -310,12 +329,14 @@ Game.prototype.spawnEnemy = function() {
     $('#level').attr('level', this.level)
   }
 
-  // if (this.kills % 10 == 0) {
-  //   // boss battle
-  // }
-
   // Set up new enemy
-  this.enemyHp   = 100 * this.level
+  if ((this.level % 5 == 0) && this.level != 1) {
+    // Scale enemy HP with every 5 levels
+    this.enemyHpMod *= 1.1
+    debugger;
+  }
+
+  this.enemyHp   = 100 * (this.level * this.enemyHpMod)
   this.enemyPos  = 80.0
   $('#enemy-health-bar').attr('max', this.enemyHp)
   $('#enemy-health-bar').attr('value', this.enemyHp)
