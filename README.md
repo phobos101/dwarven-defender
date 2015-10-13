@@ -10,6 +10,8 @@ The objective is to kill the enemy goblin by repeatedly tapping or clicking on i
 Upon killing an enemy, a new goblin will spawn. The game can be played indefinatly, 
 with the enemies HP and damage scaling exponentially as you progress.
 
+![](./assets/screenshot1.png)
+
 #####Gameplay
 
 1. Each new enemy starts on the right of the screen and propressivly moves towards the player.
@@ -25,12 +27,12 @@ with the enemies HP and damage scaling exponentially as you progress.
 Every level rewards the player with 5 upgrade points. These points are used to upgrade
 various aspects of your hero.
 
-* Attack      Increased click damage by 1 per purchase. This also affects henchmen.
-* Defense     Increased resistance to enemy attacks by 1 per purchase.
-* Speed       Increased chance to dodge by .1%. Dodge will avoid all damage from a single attack.
-* Presence    Decreases the enemies movement speed by .1% per purchase.
-* Agility     Increased critical hit chance by .1% per purchase (crits do x10 damage).
-* Vitality    Increased hero health by 10HP per purchase. Choosing this also fully heals your hero!
+* Attack:      Increased click damage by 1 per purchase. This also affects henchmen.
+* Defense:     Increased resistance to enemy attacks by 1 per purchase.
+* Speed:       Increased chance to dodge by .1%. Dodge will avoid all damage from a single attack.
+* Presence:    Decreases the enemies movement speed by .1% per purchase.
+* Agility:     Increased critical hit chance by .1% per purchase (crits do x10 damage).
+* Vitality:    Increased hero health by 10HP per purchase. Choosing this also fully heals your hero!
 
 ![](./assets/upgrades.png)
 
