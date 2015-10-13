@@ -40,7 +40,7 @@ function Game() {
   this.playerGold      = 0
   this.upgradePoints   = 0
   this.kills           = 0
-  this.enemyHpMod      = 1
+  this.enemyMod        = 1
 
   this.playerAtk       = 10
   this.playerDfs       = 0
@@ -97,7 +97,7 @@ Game.prototype.takeDmg = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (document.getElementById('enemy').hasAttribute('damage')) {
       var randomNum = (Math.random()*100).toFixed(2)
-      var dmgTaken = Math.round((this.level+5*1.2)) - this.playerDfs
+      var dmgTaken = Math.round(this.level * (2 * this.enemyMod)) - this.playerDfs
       if (dmgTaken < 1) {
         // Prevents player with higher defence than enemy damage gaining HP
         dmgTaken = 1
@@ -327,11 +327,11 @@ Game.prototype.spawnEnemy = function() {
 
   // Set up new enemy
   if ((this.level % 5 == 0) && this.level != 1) {
-    // Scale enemy HP with every 5 levels
-    this.enemyHpMod *= 1.2
+    // Scale enemy HP & DMG with every 5 levels
+    this.enemyMod *= 1.2
   }
 
-  this.enemyHp   = 100 * (this.level * this.enemyHpMod)
+  this.enemyHp   = 100 * (this.level * this.enemyMod)
   this.enemyPos  = 80.0
   $('#enemy-health-bar').attr('max', this.enemyHp)
   $('#enemy-health-bar').attr('value', this.enemyHp)
