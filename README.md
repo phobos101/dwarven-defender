@@ -18,6 +18,8 @@ When the player dies the game is over...
 - Defense: Increases your resistance to enemy attacks by 1 per purchase
 - Speed: chance to dodge increased by .1%. Dodge will avoid all damage from a single attack. 
 - Presence: Decreases the enemy movement speed by .1% per purchase
+- Agility: Increases your critical hit chance by .1% per purchase (crits do x10 damage)
+- Vitality: Increases your health by 10HP per purchase
 
 Future:
 - Charm: Decrease purchase cost of all gear by .1% per purchase
