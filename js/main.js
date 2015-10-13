@@ -35,7 +35,6 @@ function start() {
 
 function Game() {
   this.playerCurrentHp = 100
-  this.playerMaxHp     = 100
   this.playerXp        = 0
   this.level           = 1
   this.playerGold      = 0
@@ -46,6 +45,8 @@ function Game() {
   this.playerDfs       = 0
   this.playerDge       = 5.0
   this.playerPrs       = 1.0
+  this.playerCrt       = 5.0
+  this.playerMaxHp     = 100
 
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
@@ -66,14 +67,17 @@ function Game() {
   this.updateStats()
   this.spawnEnemy()
 
-  $('#stats-btn').on("click", this.showStats.bind(this))
-  $('#henchmen-btn').on("click", this.showHenchmen.bind(this))
-  $('#enemy').on("click", this.clickEnemy.bind(this))
+  $('#stats-btn').on('click', this.showStats.bind(this))
+  $('#henchmen-btn').on('click', this.showHenchmen.bind(this))
+  $('.close').on('click', this.closeWindow.bind(this))
+  $('#enemy').on('click', this.clickEnemy.bind(this))
 
   $('#atk-btn').on('click', this.upgradeAttack.bind(this))
   $('#dfs-btn').on('click', this.upgradeDefence.bind(this))
   $('#dge-btn').on('click', this.upgradeDodge.bind(this))
   $('#prs-btn').on('click', this.upgradePresence.bind(this))
+  $('#crt-btn').on('click', this.upgradeAgility.bind(this))
+  $('#hp-btn').on('click', this.upgradeVitality.bind(this))
 
   $('#darius').on('click', this.buyDarius.bind(this))
   $('#alaris').on('click', this.buyAlaris.bind(this))
@@ -141,74 +145,48 @@ Game.prototype.replay = function() {
 //                 BUTTONS 
 //-------------------------------------------
 
-Game.prototype.showStats = function() {
-  if (document.getElementById('stats-window').hasAttribute('show')) {
-    // Hide the window if open
-    this.playSound('click-low')
-    console.log("Game resumed")
-    $('#stats-window').css('display', 'none')
-    $('#stats-btn').css('margin', '')
-    $('#stats-btn').css('float', 'right')
-    document.getElementById('stats-window').removeAttribute('show')
-    $('#top-bar').css('display', 'block')
-    $('#enemy').css('display', 'block')
-    $('#player').css('display', 'block')
-    $('#henchmen-btn').css('display', 'block')
-    document.getElementById('enemy').removeAttribute('paused')
-  }
-  else {
-    // Show the stats window and pause the game
-    console.log("Game paused")
-    this.playSound('click-high')
-    $('#stats-window').css('display', 'block')
-    $('#stats-btn').css('margin', '0 auto')
-    $('#stats-btn').css('float', '')
-    $('#stats-window').attr('show', 'on')
-    $('#top-bar').css('display', 'none')
-    $('#enemy').css('display', 'none')
-    $('#player').css('display', 'none')
-    $('#henchmen-btn').css('display', 'none')
-    $('#enemy').attr('paused', 'on')
+Game.prototype.closeWindow = function() {
+  this.playSound('click-low')
+  console.log("Game resumed")
+  $('#stats-window').css('display', 'none')
+  $('#henchmen-window').css('display', 'none')
+  $('#buttons').css('display', 'block')
+  $('#top-bar').css('display', 'block')
+  $('#enemy').css('display', 'block')
+  $('#player').css('display', 'block')
+  document.getElementById('enemy').removeAttribute('paused')
+}
 
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#attack').html('Attack: ' + this.playerAtk)
-    $('#defence').html('Defence: ' + this.playerDfs)
-    $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
-    $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
-  }
+Game.prototype.showStats = function() {
+  // Show the stats window and pause the game
+  console.log("Game paused")
+  this.playSound('click-high')
+  $('#stats-window').css('display', 'block')
+  $('#buttons').css('display', 'none')
+  $('#top-bar').css('display', 'none')
+  $('#enemy').css('display', 'none')
+  $('#player').css('display', 'none')
+  $('#enemy').attr('paused', 'on')
+  $('#points').html('Points to spend: ' + this.upgradePoints)
+  $('#attack').html('Attack: ' + this.playerAtk)
+  $('#defence').html('Defence: ' + this.playerDfs)
+  $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
+  $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
+  $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
+  $('#vitality').html('Vitality: ' + this.playerMaxHp)
 }
 
 Game.prototype.showHenchmen = function() {
-  if (document.getElementById('henchmen-window').hasAttribute('show')) {
-    // Hide the window if open
-    this.playSound('click-low')
-    console.log("Game resumed")
-    $('#henchmen-window').css('display', 'none')
-    $('#henchmen-btn').css('margin', '')
-    $('#henchmen-btn').css('float', 'left')
-    document.getElementById('henchmen-window').removeAttribute('show')
-    $('#top-bar').css('display', 'block')
-    $('#enemy').css('display', 'block')
-    $('#player').css('display', 'block')
-    $('#stats-btn').css('display', 'block')
-    document.getElementById('enemy').removeAttribute('paused')
-  }
-  else {
-    // Show the henchmen window and pause the game
-    this.playSound('click-high')
-    console.log("Game paused")
-    $('#henchmen-window').css('display', 'block')
-    $('#henchmen-btn').css('margin', '0 auto')
-    $('#henchmen-btn').css('float', '')
-    $('#henchmen-window').attr('show', 'on')
-    $('#top-bar').css('display', 'none')
-    $('#enemy').css('display', 'none')
-    $('#player').css('display', 'none')
-    $('#stats-btn').css('display', 'none')
-    $('#enemy').attr('paused', 'on')
-
-    $('#hench-gold').html('Gold: ' + this.playerGold)
-  }
+  // Show the henchmen window and pause the game
+  this.playSound('click-high')
+  console.log("Game paused")
+  $('#henchmen-window').css('display', 'block')
+  $('#buttons').css('display', 'none')
+  $('#top-bar').css('display', 'none')
+  $('#enemy').css('display', 'none')
+  $('#player').css('display', 'none')
+  $('#enemy').attr('paused', 'on')
+  $('#hench-gold').html('Gold: ' + this.playerGold)
 }
 
 //-------------------------------------------
@@ -252,6 +230,28 @@ Game.prototype.upgradePresence = function() {
     this.playerPrs += 0.1
     $('#points').html('Points to spend: ' + this.upgradePoints)
     $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
+  }
+}
+
+Game.prototype.upgradeAgility = function() {
+  if (this.upgradePoints > 0) {
+    this.playSound('click-high')
+    this.upgradePoints -= 1
+    this.playerCrt += 0.1
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
+  }
+}
+
+Game.prototype.upgradeVitality = function() {
+  if (this.upgradePoints > 0) {
+    this.playSound('click-high')
+    this.upgradePoints -= 1
+    this.playerMaxHp += 10
+    this.playerCurrentHp = this.playerMaxHp
+    $('#points').html('Points to spend: ' + this.upgradePoints)
+    $('#vitality').html('Vitality: ' + this.playerMaxHp)
+    this.updateStats()
   }
 }
 
@@ -347,18 +347,34 @@ Game.prototype.moveEnemy = function() {
 Game.prototype.clickEnemy = function() {
   if (!document.getElementById('enemy').hasAttribute('paused')) {
     if (this.enemyHp > 0) {
-      this.enemyHp -= this.playerAtk;
+      var randomNum = Math.ceil(Math.random()* 100).toFixed(2)
+      if (randomNum < this.playerCrt) {
+        // Critical hit!
+        var crit = true;
+        var critDmg = this.playerAtk * 10
+        this.enemyHp -= critDmg
+      }
+      else {
+        this.enemyHp -= this.playerAtk;
+      }
       this.playSound('enemy-hit')
 
       // Show floating damage
       $('#enemy-damage-text').show()
       $('#enemy-damage-text').css("left", (this.enemyPos + 5) + '%')
       $('#enemy-damage-text').css("top", 35 + '%')
-      $('#enemy-damage-text').html('-' + this.playerAtk + ' hp')
+      if (crit) {
+        $('#enemy-damage-text').html('CRIT! -' + critDmg + ' hp')
+      }
+      else {
+        $('#enemy-damage-text').html('-' + this.playerAtk + ' hp')
+      }
       $('#enemy-damage-text').fadeOut(400)
-
       $('#enemy').attr('src', 'assets/enemy-hit.gif')
+      
+      // After Hit
       if (this.enemyHp > 0) {
+        // Enemy still alive
         $('#enemy-health-bar').attr('value', this.enemyHp)
       }
       else {
