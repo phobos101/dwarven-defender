@@ -80,9 +80,9 @@ function Game() {
   $('#crt-btn').on('click', this.upgradeStat.bind(this, 'crt', 'agility'))
   $('#hp-btn').on('click', this.upgradeStat.bind(this, 'hp', 'vitality'))
 
-  $('#darius').on('click', this.buyDarius.bind(this))
-  $('#alaris').on('click', this.buyAlaris.bind(this))
-  $('#terna').on('click', this.buyTerna.bind(this))
+  $('#darius').on('click', this.buyHenchmen.bind(this, 'darius'))
+  $('#alaris').on('click', this.buyHenchmen.bind(this, 'alaris'))
+  $('#terna').on('click', this.buyHenchmen.bind(this, 'terna'))
   
   this.damageTimer     = setInterval(this.takeDmg.bind(this), 500)
 }
@@ -197,7 +197,6 @@ Game.prototype.upgradeStat = function(abr, stat) {
   var capitalAbr = 'player' + abr.charAt(0).toUpperCase() + abr.slice(1)
   var jqueryStat = '#' + stat
   var jqueryBtn  = '#' + abr + '-btn'
-  debugger;
 
   if (this.upgradePoints > 0) {
     if (abr == 'crt' || abr == 'prs' || abr == 'dge') {
@@ -236,36 +235,19 @@ Game.prototype.upgradeStat = function(abr, stat) {
 //                 HENCHMEN 
 //-------------------------------------------
 
-Game.prototype.buyDarius = function() {
-  if (this.playerGold >= 100) {
-    this.playSound('click-high')
-    this.dariusTimer = setInterval(this.clickEnemy.bind(this), 1000)
-    this.playerGold -= 100
-    $('#gold').html('Gold: ' + this.playerGold)
-    $('#darius').html('Darius Hired!')
-    $('#darius').off()
-  }
-}
+Game.prototype.buyHenchmen = function(henchmen) {
+  var capitalHenchmen = henchmen.charAt(0).toUpperCase() + henchmen.slice(1)
+  var jqueryHenchmen  = '#' + henchmen
+  var cost            = parseInt($(jqueryHenchmen).attr('cost'))
+  var timer           = henchmen + 'Timer'
 
-Game.prototype.buyAlaris = function() {
-  if (this.playerGold >= 1000) {
+  if (this.playerGold >= cost) {
     this.playSound('click-high')
-    this.alarisTimer = setInterval(this.clickEnemy.bind(this), 200)
-    this.playerGold -= 1000
+    this[timer] = setInterval(this.clickEnemy.bind(this), 1000)
+    this.playerGold -= cost
     $('#gold').html('Gold: ' + this.playerGold)
-    $('#alaris').html('Alaris Hired!')
-    $('#alaris').off()
-  }
-}
-
-Game.prototype.buyTerna = function() {
-  if (this.playerGold >= 10000) {
-    this.playSound('click-high')
-    this.ternaTimer = setInterval(this.clickEnemy.bind(this), 100)
-    this.playerGold -= 10000
-    $('#gold').html('Gold: ' + this.playerGold)
-    $('#terna').html('Terna Hired!')
-    $('#terna').off()
+    $(jqueryHenchmen).html(capitalHenchmen + ' Hired!')
+    $(jqueryHenchmen).off()
   }
 }
 
