@@ -17,7 +17,7 @@ body {
 #content {
 	background-image: url(../assets/background2.png);
 	background-size: cover;
-	height: 768px;
+	height: 500px;
 	width: 1024px;
 	position: relative;
 	margin: 0 auto;
@@ -105,6 +105,7 @@ body {
 #enemy-damage-text {
 	position: absolute;
 	font-size: 20px;
+	top: 35%;
 	color: red;
 }
 
@@ -208,7 +209,7 @@ progress#enemy-health-bar {
 #player-dead-div {
 	background-color: black;
 	color: #880015;
-	height: 768px;
+	height: 500px;
 	width: 1024px;
 	position: relative;
 	margin: 0 auto;
@@ -240,19 +241,51 @@ progress#enemy-health-bar {
 
 /* MEDIA QUERIES */
 
-@media only screen and (max-width: 1280px) and (max-height: 800px) {
-	/* 13" MBP (1280 x 800) */
+@media only screen and (min-width: 1024px) and (min-height: 768px) {
+	/* iPad (1024 x 768) */
 
 	#content {
-		height: 500px;
+		height: 768px;
 	}
 
 	#player-dead-div {
-		height: 500px;
+		height: 768px;
+	}
+
+	#player {
+		height: 410px;
+	}
+
+	#enemy {
+		height: 290px;
+	}
+
+	#intro-text {
+		left: 50%;
+		font-size: 20px;
+	}
+
+	#player-damage-text {
+		top: 35%;
+		font-size: 30px;
+	}
+
+	#enemy-damage-text {
+		top: 50%;
+		font-size: 30px;
+	}
+
+	.window p {
+		font-size: 24px;
+	}
+
+	body {
+		font-size: 24px;
 	}
 }
 
-@media only screen and (max-width: 736px) {
+
+@media only screen and (max-width: 736px) and (max-height: 414px) {
 	/* iPhone 6 Plus (736 x 414) */
 
 	#content {
@@ -268,6 +301,16 @@ progress#enemy-health-bar {
 		font-size: 14px;
 		left: 46%;
 		bottom: 23%;
+	}
+
+	#player-damage-text {
+		top: 30%;
+		font-size: 20px;
+	}
+
+	#enemy-damage-text {
+		top: 30%;
+		font-size: 20px;
 	}
 
 	#level {

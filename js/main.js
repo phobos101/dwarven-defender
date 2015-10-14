@@ -378,7 +378,6 @@ Game.prototype.clickEnemy = function() {
       // Show floating damage
       $('#enemy-damage-text').show()
       $('#enemy-damage-text').css("left", (this.enemyPos + 5) + '%')
-      $('#enemy-damage-text').css("top", 35 + '%')
       if (crit) {
         $('#enemy-damage-text').html('CRIT! -' + critDmg + ' hp')
       }
