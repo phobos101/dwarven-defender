@@ -47,7 +47,7 @@ function Game() {
   this.playerDge       = 5.0
   this.playerPrs       = 1.0
   this.playerCrt       = 5.0
-  this.playerMaxHp     = 100
+  this.playerHp        = 100
 
   this.enemyHp         = 100 * this.level
   this.enemyPos        = 80.0
@@ -73,23 +73,22 @@ function Game() {
   $('.close').on('click', this.closeWindow.bind(this))
   $('#enemy').on('click', this.clickEnemy.bind(this))
 
-  $('#atk-btn').on('click', this.upgradeAttack.bind(this))
-  $('#dfs-btn').on('click', this.upgradeDefence.bind(this))
-  $('#dge-btn').on('click', this.upgradeDodge.bind(this))
-  $('#prs-btn').on('click', this.upgradePresence.bind(this))
-  $('#crt-btn').on('click', this.upgradeAgility.bind(this))
-  $('#hp-btn').on('click', this.upgradeVitality.bind(this))
+  $('#atk-btn').on('click', this.upgradeStat.bind(this, 'atk', 'attack'))
+  $('#dfs-btn').on('click', this.upgradeStat.bind(this, 'dfs', 'defence'))
+  $('#dge-btn').on('click', this.upgradeStat.bind(this, 'dge', 'dodge'))
+  $('#prs-btn').on('click', this.upgradeStat.bind(this, 'prs', 'presence'))
+  $('#crt-btn').on('click', this.upgradeStat.bind(this, 'crt', 'agility'))
+  $('#hp-btn').on('click', this.upgradeStat.bind(this, 'hp', 'vitality'))
 
   $('#darius').on('click', this.buyDarius.bind(this))
   $('#alaris').on('click', this.buyAlaris.bind(this))
   $('#terna').on('click', this.buyTerna.bind(this))
   
   this.damageTimer     = setInterval(this.takeDmg.bind(this), 500)
-  // this.playSound('game-music')
 }
 
 Game.prototype.updateStats = function () {
-  $('#player-health-bar').attr('max', this.playerMaxHp)
+  $('#player-health-bar').attr('max', this.playerHp)
   $('#player-health-bar').attr('value', this.playerCurrentHp)
 }
 
@@ -173,7 +172,7 @@ Game.prototype.showStats = function() {
   $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
   $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
   $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
-  $('#vitality').html('Vitality: ' + this.playerMaxHp)
+  $('#vitality').html('Vitality: ' + this.playerHp)
 }
 
 Game.prototype.showHenchmen = function() {
@@ -193,85 +192,125 @@ Game.prototype.showHenchmen = function() {
 //                 UPGRADES 
 //-------------------------------------------
 
-Game.prototype.upgradeAttack = function() {
-  if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerAtk += 1
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#attack').html('Attack: ' + this.playerAtk)
-  }
-}
+Game.prototype.upgradeStat = function(abr, stat) {
+  // Upgrades an ability based on button pushed.
+  var capitalAbr = 'player' + abr.charAt(0).toUpperCase() + abr.slice(1)
+  var jqueryStat = '#' + stat
+  var jqueryBtn  = '#' + abr + '-btn'
+  debugger;
 
-Game.prototype.upgradeDefence = function() {
   if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerDfs += 1
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#defence').html('Defence: ' + this.playerDfs)
-  }
-}
-
-Game.prototype.upgradeDodge = function() {
-  if (this.upgradePoints > 0) {
-    if (this.playerDge.toFixed(2) < 90.00) {
+    if (abr == 'crt' || abr == 'prs' || abr == 'dge') {
+      if (this[capitalAbr].toFixed(2) < 90.00) {
+        this.playSound('click-high')
+        this.upgradePoints -= 1
+        this[capitalAbr] += 0.1
+        $('#points').html('Points to spend: ' + this.upgradePoints)
+        $(jqueryStat).html(stat + ': ' + this[capitalAbr].toFixed(2) + '%')
+      }
+      else {
+        $(jqueryBtn).html('Max Level!')
+        $(jqueryBtn).off()
+      }
+    } // End of critial hit, dodge and presence
+    else if (abr == 'hp'){
       this.playSound('click-high')
       this.upgradePoints -= 1
-      this.playerDge += 0.1
+      this[capitalAbr] += 10
       $('#points').html('Points to spend: ' + this.upgradePoints)
-      $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
-    }
+      $(jqueryStat).html(stat + ': ' + this[capitalAbr])
+      $('#vitality').html('Vitality: ' + this.playerHp)
+      this.updateStats()
+    }  // End of vitality
     else {
-      $('#dge-btn').html('Max Level!')
-      $('#dge-btn').off()
-    }
-  }
-}
-
-Game.prototype.upgradePresence = function() {
-  if (this.upgradePoints > 0) {
-    if (this.playerPrs.toFixed(2) < 90.00) {
       this.playSound('click-high')
       this.upgradePoints -= 1
-      this.playerPrs += 0.1
+      this[capitalAbr] += 1
       $('#points').html('Points to spend: ' + this.upgradePoints)
-      $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
-    }
-    else {
-      $('#prs-btn').html('Max Level!')
-      $('#prs-btn').off()
-    }
+      $(jqueryStat).html(stat + ': ' + this[capitalAbr])
+    } // End of attack and defense
   }
 }
 
-Game.prototype.upgradeAgility = function() {
-  if (this.upgradePoints > 0) {
-    if (this.playerCrt.toFixed(2) < 100.00) {
-      this.playSound('click-high')
-      this.upgradePoints -= 1
-      this.playerCrt += 0.1
-      $('#points').html('Points to spend: ' + this.upgradePoints)
-      $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
-    }
-    else {
-      $('#crt-btn').html('Max Level!')
-      $('#crt-btn').off()
-    }
-  }
-}
+// Game.prototype.upgradeAttack = function() {
+//   if (this.upgradePoints > 0) {
+//     this.playSound('click-high')
+//     this.upgradePoints -= 1
+//     this.playerAtk += 1
+//     $('#points').html('Points to spend: ' + this.upgradePoints)
+//     $('#attack').html('Attack: ' + this.playerAtk)
+//   }
+// }
 
-Game.prototype.upgradeVitality = function() {
-  if (this.upgradePoints > 0) {
-    this.playSound('click-high')
-    this.upgradePoints -= 1
-    this.playerMaxHp += 10
-    this.playerCurrentHp = this.playerMaxHp
-    $('#points').html('Points to spend: ' + this.upgradePoints)
-    $('#vitality').html('Vitality: ' + this.playerMaxHp)
-    this.updateStats()
-  }
-}
+// Game.prototype.upgradeDefence = function() {
+//   if (this.upgradePoints > 0) {
+//     this.playSound('click-high')
+//     this.upgradePoints -= 1
+//     this.playerDfs += 1
+//     $('#points').html('Points to spend: ' + this.upgradePoints)
+//     $('#defence').html('Defence: ' + this.playerDfs)
+//   }
+// }
+
+// Game.prototype.upgradeDodge = function() {
+//   if (this.upgradePoints > 0) {
+//     if (this.playerDge.toFixed(2) < 90.00) {
+//       this.playSound('click-high')
+//       this.upgradePoints -= 1
+//       this.playerDge += 0.1
+//       $('#points').html('Points to spend: ' + this.upgradePoints)
+//       $('#dodge').html('Dodge: ' + this.playerDge.toFixed(2) + '%')
+//     }
+//     else {
+//       $('#dge-btn').html('Max Level!')
+//       $('#dge-btn').off()
+//     }
+//   }
+// }
+
+// Game.prototype.upgradePresence = function() {
+//   if (this.upgradePoints > 0) {
+//     if (this.playerPrs.toFixed(2) < 90.00) {
+//       this.playSound('click-high')
+//       this.upgradePoints -= 1
+//       this.playerPrs += 0.1
+//       $('#points').html('Points to spend: ' + this.upgradePoints)
+//       $('#presence').html('Presence: ' + this.playerPrs.toFixed(2) + '%')
+//     }
+//     else {
+//       $('#prs-btn').html('Max Level!')
+//       $('#prs-btn').off()
+//     }
+//   }
+// }
+
+// Game.prototype.upgradeAgility = function() {
+//   if (this.upgradePoints > 0) {
+//     if (this.playerCrt.toFixed(2) < 100.00) {
+//       this.playSound('click-high')
+//       this.upgradePoints -= 1
+//       this.playerCrt += 0.1
+//       $('#points').html('Points to spend: ' + this.upgradePoints)
+//       $('#agility').html('Agility: ' + this.playerCrt.toFixed(2) + '%')
+//     }
+//     else {
+//       $('#crt-btn').html('Max Level!')
+//       $('#crt-btn').off()
+//     }
+//   }
+// }
+
+// Game.prototype.upgradeVitality = function() {
+//   if (this.upgradePoints > 0) {
+//     this.playSound('click-high')
+//     this.upgradePoints -= 1
+//     this.playerHp += 10
+//     this.playerCurrentHp = this.playerHp
+//     $('#points').html('Points to spend: ' + this.upgradePoints)
+//     $('#vitality').html('Vitality: ' + this.playerHp)
+//     this.updateStats()
+//   }
+// }
 
 //-------------------------------------------
 //                 HENCHMEN 
@@ -341,7 +380,7 @@ Game.prototype.spawnEnemy = function() {
   $('#enemy').attr('src', 'assets/enemy_side_transparent.gif')
   $('#enemy').fadeIn(200)
 
-  // Start moveing enemy towards player
+  // Start moving enemy towards player
   this.moveTimer = setInterval(this.moveEnemy.bind(this), 200)
 }
 
@@ -406,7 +445,7 @@ Game.prototype.clickEnemy = function() {
         $('#enemy').fadeOut(1000)
         setTimeout(this.spawnEnemy.bind(this), 1100)
         clearInterval(this.moveTimer)
-        this.enemyHp = -1
+        this.enemyHp = -1 //Prevents repeat kills of same enemy!
       }
     }
     else {
