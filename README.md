@@ -1,7 +1,7 @@
 #Dwarven Defender!
 
 ###GA WDI-LDN-16 - Project 1
-#####[Play it here!](https://glacial-hamlet-1798.herokuapp.com/ "Here!")
+#####[Play it here!](http://dwarven-defender.herokuapp.com/ "Here!")
 
 Dwarven Defender is a clicker type game inspired by titles such as 'Cookie Clicker' 
 and 'Clicker Heroes'.
